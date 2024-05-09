@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "portal",
+    "slug": "portal",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/iconGreen.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/iconGreen.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/iconGreen.png",
+        "backgroundColor": "#000"
+      },
+      "package": "com.aryahajari.portal"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/iconGreen.png"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
