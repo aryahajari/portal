@@ -2,7 +2,6 @@ import { View, Text } from 'react-native'
 import { styled } from "nativewind";
 import React from 'react'
 import { Link } from 'expo-router';
-
 const $View = styled(View);
 const $Text = styled(Text);
 const $Link = styled(Link);

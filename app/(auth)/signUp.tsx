@@ -2,7 +2,8 @@ import SignUpForm from '@/components/SignUpForm'
 import { images } from '@/constants'
 //---------------------------------------------------------------------------------------------------------
 import { createUserWithEmailAndPassword, AuthError } from 'firebase/auth'
-import { firebaseAuth } from '@/FirebaseConfig'
+import { doc, setDoc } from "firebase/firestore";
+import { firebaseAuth, firebaseFirestore } from '@/FirebaseConfig'
 //---------------------------------------------------------------------------------------------------------
 import { Link, router } from 'expo-router'
 import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native'
@@ -37,12 +38,19 @@ const signUp = () => {
         setFormErrors(Errors)
     }
     //----------------------------------------------------------------------------------------------------
+    async function InitializeUser(uid: string, email: string) {
+        const userRef = doc(firebaseFirestore, 'users', uid);
+        await setDoc(userRef, { uid: uid, email: email }, { merge: true })
+            .then(() => { router.replace('/userInfo') })
+            .catch((error) => {
+                console.error("Error adding document: ", error);
+            });
+    }
     const handleSignUp = async () => {
         console.log(formData.email, formData.password)
         await createUserWithEmailAndPassword(firebaseAuth, formData.email, formData.password)
-            .then((usr) => {
-                console.log(usr.user.uid)
-                router.replace('/userInfo')
+            .then(async (usr) => {
+                await InitializeUser(usr.user.uid, usr.user.email ?? '')
             })
             .catch((error: AuthError) => {
                 console.log('code : ', error.code)
@@ -52,7 +60,7 @@ const signUp = () => {
     return (
         <>
             <$ScrollView className='bg-dark'>
-                <$View className='justify-center self-center w-2/3'>
+                <$View className='justify-center self-center w-2/3 lg:w-1/5'>
                     <$Image
                         source={images.logoGreen}
                         resizeMode='contain'

@@ -57,6 +57,7 @@ const SignUpForm = ({ formData, handleEmailChange, handlePasswordChange, handleV
                 style={{ borderColor: validation.email || formData.email == '' ? 'green' : 'red' }}
             >
                 <$TextInput
+                    placeholderTextColor={'black'}
                     className=' p-2 text-black flex-1 '
                     placeholder='Email'
                     value={formData.email}
@@ -70,10 +71,11 @@ const SignUpForm = ({ formData, handleEmailChange, handlePasswordChange, handleV
                 <$TextInput
                     value={formData.password}
                     style={Platform.OS === 'web' ? { outlineStyle: 'none' } : { borderColor: '#000' }}
-                    className='border-transparent p-2 text-black flex-1'
+                    className='border-transparent p-2 text-black flex-1 placeholder:text-black'
                     placeholder='Password'
                     secureTextEntry={!showPassword}
                     onChangeText={onPassChange}
+                    placeholderTextColor={'black'}
                 />
                 <$TouchableWithoutFeedback
                     onPress={handleShowBtn}
@@ -97,6 +99,7 @@ const SignUpForm = ({ formData, handleEmailChange, handlePasswordChange, handleV
                     style={Platform.OS === 'web' ? { outlineStyle: 'none' } : { borderColor: '#000' }}
                     className='border-transparent p-2 text-black flex-1'
                     placeholder='Password'
+                    placeholderTextColor={'black'}
                     secureTextEntry={!showPassword}
                     onChangeText={(password) => { handleRetypePasswordChange(password) }}
                 />

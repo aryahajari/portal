@@ -5,7 +5,8 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { styled } from 'nativewind'
 import { NativeWindStyleSheet } from "nativewind";
-import { GlobalProvider } from '../context/GlobalProvide';
+import { GlobalProvider } from '../context/AuthDataProvider';
+import { GlobalUserProvider } from '../context/UserDataProvider';
 NativeWindStyleSheet.setOutput({
   default: "native",
 });
@@ -16,13 +17,11 @@ const RootLayout = () => {
     <>
       <StatusBar style='light' />
       <GlobalProvider>
-        <$SafeAreaView className='flex-1 bg-dark'>
-          <Stack>
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          </Stack>
-        </$SafeAreaView>
+        <GlobalUserProvider>
+          <$SafeAreaView className='flex-1 bg-dark'>
+            <Slot />
+          </$SafeAreaView>
+        </GlobalUserProvider>
       </GlobalProvider>
     </>
   )

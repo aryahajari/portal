@@ -1,9 +1,10 @@
 import { View, Image, Text, ImageSourcePropType, ColorSchemeName, ColorValue } from 'react-native'
 import { styled } from "nativewind";
-import React from 'react'
-import { Tabs, Redirect } from 'expo-router'
+import React, { useEffect } from 'react'
+import { Tabs, Redirect, router } from 'expo-router'
 import { icons } from '../../constants'
-
+import { useUserData } from '@/context/UserDataProvider';
+import { useRouter } from 'expo-router'
 const $View = styled(View);
 const $Image = styled(Image);
 const $Text = styled(Text)
@@ -33,7 +34,15 @@ const TabIcon = ({ icon, color, name, focused }: TabIconInSchema) => {
     )
 }
 const TabsLayout = () => {
+    const router = useRouter();
+    const userData = useUserData();
+    useEffect(() => {
+        if (userData?.pfp || userData?.userName || userData?.dateOfBirth) {
+            router.replace('userInfo')
+        }
+    }, [userData])
     return (
+
         <Tabs
             screenOptions={{
                 tabBarShowLabel: false,

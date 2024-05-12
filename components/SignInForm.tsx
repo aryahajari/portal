@@ -54,6 +54,7 @@ const SignInForm = ({ email, password, handleEmailChange, handlePasswordChange, 
                     placeholder='Email'
                     value={email}
                     onChangeText={onEmailChange}
+                    placeholderTextColor={'black'}
                 />
             </$View>
             <$View className='flex-row  border-2 border-gray-400 rounded-md w-full bg-slate-200'>
@@ -64,6 +65,7 @@ const SignInForm = ({ email, password, handleEmailChange, handlePasswordChange, 
                     placeholder='Password'
                     secureTextEntry={!showPassword}
                     onChangeText={onPassChange}
+                    placeholderTextColor={'black'}
                 />
                 <$TouchableWithoutFeedback
                     onPress={handleState}
