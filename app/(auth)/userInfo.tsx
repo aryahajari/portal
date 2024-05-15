@@ -1,8 +1,8 @@
 import SignInForm from '@/components/SignInForm'
 import UserNamePicker from '@/components/UserNamePicker'
 import DateBirthPicker from '@/components/DateBirthPicker'
-import SetProfilePicture from '@/components/SetProfilePicture'
-import SetPFP from '@/components/SetPFP'
+import SetProfilePicture from '@/components/setPFP-Web'
+import SetPFP from '@/components/SetPFP-phone'
 import { images } from '@/constants'
 //---------------------------------------------------------------------------------------------------------
 import { signInWithEmailAndPassword, AuthError } from 'firebase/auth'
@@ -29,7 +29,7 @@ const userInfo = () => {
     const userData = useUserData();
     return (
         <>
-            <$SafeAreaView className='bg-dark'>
+            <$SafeAreaView className='bg-dark h-full'>
                 <$ScrollView className='bg-dark h-full'>
                     <$View className='justify-center h-full overflow-hidden self-center w-2/3 p-1 lg:w-1/5'>
                         {Platform.OS === 'web' ? <SetProfilePicture /> : <SetPFP />}

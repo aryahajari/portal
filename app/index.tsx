@@ -17,6 +17,7 @@ const App = () => {
   const router = useRouter();
   const userData = useUserData();
   const authData = useAuthContext();
+  console.log("authData", userData)
   return (
     <>
       <Stack>
@@ -24,7 +25,8 @@ const App = () => {
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
-      {authData.isSignedIn ? <Redirect href={'/home'} /> : <Redirect href={'/logIn'} />}
+      {/* is signedIn is null do nothing if signedIn is true do nothing if signedIn is false redirect to logIn */}
+      {authData.isSignedIn === null || authData.isSignedIn === true || <Redirect href={'/logIn'} />}
     </>
   )
 }

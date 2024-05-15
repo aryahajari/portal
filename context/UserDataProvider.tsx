@@ -20,17 +20,23 @@ export const useUserData = () => {
     return context;
 };
 import { doc, onSnapshot } from "firebase/firestore";
+import { useRouter } from 'expo-router';
 
 export const GlobalUserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [userData, setUserData] = useState<UserSchema | null>(null);
     const { isSignedIn, userId } = useAuthContext();
+    const router = useRouter();
     useEffect(() => {
         if (!isSignedIn) return;
         if (!userId) return;
         onSnapshot(doc(firebaseFirestore, "users", userId),
             (documentSnapshot) => {
                 if (documentSnapshot.exists()) {
-                    setUserData(documentSnapshot.data() as UserSchema);
+                    const data = documentSnapshot.data() as UserSchema;
+                    setUserData(data);
+                    if (!(data?.email && data?.userName && data?.dateOfBirth && data?.pfp)) {
+                        router.replace('userInfo')
+                    }
                 } else {
                     console.error("User data not found", userId);
                     setUserData(null);
