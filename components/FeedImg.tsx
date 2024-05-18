@@ -1,25 +1,19 @@
 import { View, Text, NativeSyntheticEvent, ImageLoadEventData } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { $Image, $View, $ImageBackground, $Text } from './NativeWind'
-import { getDownloadUrl } from '@/FirebaseConfig'
+import { getImg } from '@/FirebaseConfig'
+import { Image } from 'react-native'
+const FeedImg = (props: { URL: string, aspectRatio: Number }) => {
 
-const FeedImg = (props: { URL: string }) => {
-    const [img, setImg] = useState<string | null>(null)
-    if (props?.URL) {
-        getDownloadUrl(props.URL)
-            .then((url) => {
-                setImg(url);
-            })
-    }
     return (
         <>
-            {img &&
-                <$View className='w-full flex-1 justify-center items-center'>
+            {props.URL &&
+                <$View className='w-full flex-1' key={props.URL}>
                     <$Image
-                        source={{ uri: img }}
+                        source={{ uri: props.URL }}
                         resizeMode='contain'
-                        className='w-full h-full'
-
+                        className='rounded-xl p-2'
+                        style={{ width: '100%', height: '100%', aspectRatio: props.aspectRatio.toString() }}
 
                     />
                 </$View>

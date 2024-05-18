@@ -14,7 +14,7 @@ const ShowPFP = (props: { URL: string | undefined }) => {
     return (
         <$View className='items-center justify-center w-full'>
             <$Image
-                className='h-14 w-14 lg:w-16 lg:h-16 rounded-full mb-3 bg-primary-100 border-solid border-2 border-secondary-200'
+                className='h-14 w-14 lg:w-16 lg:h-16 rounded-full bg-primary-100 border-solid border-2 border-secondary-200'
                 resizeMode='cover'
                 source={PFPurl ? { uri: PFPurl } : require('@/assets/images/profile.png')}
             />

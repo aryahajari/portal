@@ -20,6 +20,7 @@ const create = () => {
     interface imgSchema {
         file: Blob
         url: string
+        aspectRatio: number
     }
     const [img, setImg] = useState<imgSchema | null>(null);
     const handleSubmit = async () => {
@@ -29,7 +30,7 @@ const create = () => {
             await runTransaction(firebaseFirestore, async (transaction) => {
                 let ref: null | string = null;
                 if (img) {
-                    const snapshot = await uploadBytes(storageRef, img.file);
+                    const snapshot = await uploadBytes(storageRef, img.file, { customMetadata: { 'aspectRatio': img.aspectRatio.toString() } });
                     ref = snapshot.ref.fullPath;
                 }
                 // Create a new document in feeds collection

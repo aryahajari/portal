@@ -4,6 +4,15 @@ import { Dispatch, SetStateAction } from "react";
 export interface FeedSchema {
     feedId: string;
     uid: string;
+    img: { url: string, aspectRatio: number } | undefined;
+    caption: string;
+    likes: number;
+    comments: string[];
+    createdAt: Timestamp;
+}
+export interface FeedDbSchema {
+    feedId: string;
+    uid: string;
     img: string | undefined;
     caption: string;
     likes: number;

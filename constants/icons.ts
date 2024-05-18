@@ -27,6 +27,11 @@ const play = require("../assets/icons/play.png");
 const send = require("../assets/icons/send.png");
 const picture = require("../assets/icons/picture.png");
 const buttons = require("../assets/icons/buttons.png");
+const alien = require("../assets/icons/alien.png");
+const aliens = require("../assets/icons/aliens.png");
+const forbidden = require("../assets/icons/forbidden.png");
+const searchAlien = require("../assets/icons/searchAlien.png");
+const setting = require("../assets/icons/settings.png");
 export default {
   play,
   bookmark,
@@ -43,5 +48,10 @@ export default {
   eye,
   send,
   picture,
-  buttons
+  buttons,
+  alien,
+  aliens,
+  forbidden,
+  searchAlien,
+  setting
 };

@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, getDoc, collection, where, query, orderBy, getDocs } from "firebase/firestore";
-import { getDownloadURL, getStorage, ref } from 'firebase/storage'
-import { UserSchema, AuthContextSchema, FeedSchema } from '@/context/schema'
+import { getFirestore, initializeFirestore, doc, getDoc, collection, where, query, orderBy, getDocs } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, getMetadata } from 'firebase/storage'
+import { UserSchema, AuthContextSchema, FeedSchema, FeedDbSchema } from '@/context/schema'
 const firebaseConfig = {
     apiKey: "AIzaSyBH8mWXeQ-rPT7JvYIFG4dQ3gublhyLJ5o",
     authDomain: "portal-react-native.firebaseapp.com",
@@ -41,14 +41,23 @@ export async function getUserFeedData(uid: string) {
         orderBy('createdAt')
     );
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map((doc) => ({ ...doc.data(), feedId: doc.id }) as FeedSchema);
+    const data = querySnapshot.docs.map((doc) => ({ ...doc.data(), feedId: doc.id }) as FeedDbSchema);
+    const data2 = data.map(async (item) => {
+        if (!item.img) return item;
+        const { url, aspectRatio } = await getImg(item.img);
+        return { ...item, img: { url, aspectRatio } };
+    });
+    const data3 = await Promise.all(data2) as FeedSchema[];
+    return data3;
 
 }
-export async function getDownloadUrl(path: string) {
+export async function getImg(path: string) {
     const url = await getDownloadURL(ref(firebaseStorage, path));
-    return url;
-
+    const metadata = await getMetadata(ref(firebaseStorage, path));
+    const aspectRatio = Number(metadata?.customMetadata?.aspectRatio);
+    return { url, aspectRatio };
 }
 
 export const firebaseFirestore = getFirestore(firebaseApp);
+
 export const firebaseStorage = getStorage(firebaseApp);

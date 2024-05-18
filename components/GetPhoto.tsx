@@ -30,11 +30,17 @@ const uriToBlob = async (uri: string) => {
 };
 //---------------------------------------------------------------------------------------------------------
 import { getDocumentAsync } from 'expo-document-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
 import { $Image, $TouchableOpacity } from './NativeWind';
 interface imgSchema {
     file: Blob
     url: string
+    aspectRatio: number
 }
+const getAspectRatio = async (uri: string) => {
+    const { width, height } = await ImageManipulator.manipulateAsync(uri, []);
+    return width / height;
+};
 const GetPhoto = (props: { img: imgSchema | null, setImg: React.Dispatch<React.SetStateAction<imgSchema | null>> }) => {
 
     const pickImgPhone = async () => {
@@ -45,9 +51,10 @@ const GetPhoto = (props: { img: imgSchema | null, setImg: React.Dispatch<React.S
             quality: 1,
         });
         if (!(result.assets && result.assets[0].uri)) return;
+        const aspectRatio = result.assets[0].width / result.assets[0].height;
         const uri = result.assets[0].uri;
         const blob = await uriToBlob(uri)
-        props.setImg({ file: blob, url: uri });
+        props.setImg({ file: blob, url: uri, aspectRatio });
     };
     const pickImgWeb = async () => {
         try {
@@ -59,7 +66,8 @@ const GetPhoto = (props: { img: imgSchema | null, setImg: React.Dispatch<React.S
             if (!(result !== null && result.assets && result.assets[0].file)) { throw new Error('No file found') }
             const blob = new Blob([result.assets[0].file], { type: result.assets[0].file.type });
             const uri = result.assets[0].uri;
-            props.setImg({ file: blob, url: uri });
+            const aspectRatio = await getAspectRatio(uri);
+            props.setImg({ file: blob, url: uri, aspectRatio });
 
         } catch (error) {
             console.error('Document Picker Error:', error);
