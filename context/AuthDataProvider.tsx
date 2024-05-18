@@ -1,13 +1,9 @@
 import { firebaseAuth } from '@/FirebaseConfig';
 import { useRouter } from 'expo-router';
 import { onAuthStateChanged } from 'firebase/auth';
-import { createContext, useContext, useState, useEffect, Dispatch, ReactNode, SetStateAction } from "react";
-export interface AuthContextSchema {
-    setIsSignedIn: Dispatch<SetStateAction<boolean>>;
-    setUser: Dispatch<SetStateAction<string | null>>;
-    userId: string;
-    isSignedIn: boolean;
-}
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { AuthContextSchema } from './schema';
+
 const AuthContext = createContext({} as AuthContextSchema);
 export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const router = useRouter();

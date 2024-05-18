@@ -24,6 +24,9 @@ const logout = require("../assets/icons/logout.png");
 const eyeHide = require("../assets/icons/eye-hide.png");
 const eye = require("../assets/icons/eye.png");
 const play = require("../assets/icons/play.png");
+const send = require("../assets/icons/send.png");
+const picture = require("../assets/icons/picture.png");
+const buttons = require("../assets/icons/buttons.png");
 export default {
   play,
   bookmark,
@@ -38,4 +41,7 @@ export default {
   logout,
   eyeHide,
   eye,
+  send,
+  picture,
+  buttons
 };

@@ -3,16 +3,11 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import '@/assets/styles/reactDatePicker.css';
-//------------------------------------------------------------------------------------------
-import { Pressable, View, Text, Platform } from "react-native";
-import { styled } from "nativewind";
-const $View = styled(View);
-const $Pressable = styled(Pressable);
-const $Text = styled(Text);
-//------------------------------------------------------------------------------------------
+import { Platform } from "react-native";
 import { doc, setDoc, DocumentReference } from "firebase/firestore";
 import { firebaseFirestore } from '@/FirebaseConfig';
 import { useUserData } from '@/context/UserDataProvider'
+import { $Pressable, $Text, $View } from "./NativeWind";
 //------------------------------------------------------------------------------------------
 const DateBirthPicker = () => {
   const userData = useUserData();

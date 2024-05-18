@@ -1,19 +1,18 @@
-import { View, Text } from 'react-native'
-import { styled } from "nativewind";
 import React from 'react'
-import { Link } from 'expo-router';
-const $View = styled(View);
-const $Text = styled(Text);
-const $Link = styled(Link);
-
+import { $Link, $SafeAreaView, $Text, $View } from '@/components/NativeWind';
 const home = () => {
     return (
-        <$View className='justify-center items-center' style={{ justifyContent: 'center', alignItems: 'center' }}>
-            <$Text>home</$Text>
-            <$Link href={'/userInfo'}>
-                <$Text>userInfo</$Text>
-            </$Link>
-        </$View>
+
+        <$SafeAreaView className='bg-dark flex-1 p-0 m-0 border-0'>
+
+            <$View className='justify-center items-center' style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <$Text>home</$Text>
+                <$Link href={'/userInfo'}>
+                    <$Text>userInfo</$Text>
+                </$Link>
+            </$View>
+        </$SafeAreaView>
+
     )
 }
 

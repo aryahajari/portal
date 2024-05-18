@@ -1,9 +1,6 @@
 
 import React, { useEffect } from 'react'
-import { Slot, Stack, useRouter } from 'expo-router'
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { styled } from 'nativewind'
+import { Stack, useRouter } from 'expo-router'
 import { NativeWindStyleSheet } from "nativewind";
 import { useAuthContext } from '../context/AuthDataProvider';
 import { useUserData } from '../context/UserDataProvider';
@@ -12,7 +9,6 @@ NativeWindStyleSheet.setOutput({
   default: "native",
 });
 
-const $SafeAreaView = styled(SafeAreaView);
 const App = () => {
   const router = useRouter();
   const userData = useUserData();

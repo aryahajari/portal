@@ -1,12 +1,7 @@
-import { View, Text, TextInput, TouchableWithoutFeedback, Platform, Image, Alert } from 'react-native'
-import { styled } from 'nativewind'
+import { Platform } from 'react-native'
 import { icons } from '../constants'
-const $View = styled(View);
-const $Text = styled(Text);
-const $TextInput = styled(TextInput);
-const $Image = styled(Image);
-const $TouchableWithoutFeedback = styled(TouchableWithoutFeedback);
 import React from 'react'
+import { $Image, $Text, $TextInput, $TouchableWithoutFeedback, $View } from './NativeWind';
 interface SignInFormPropsSchema {
     email: string;
     password: string;

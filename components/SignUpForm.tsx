@@ -1,14 +1,8 @@
-import { View, Text, TextInput, TouchableWithoutFeedback, Platform, Image, Alert } from 'react-native'
-import { styled } from 'nativewind'
+import { Platform } from 'react-native'
 import { icons } from '../constants'
-import { Link } from 'expo-router'
-const $View = styled(View);
-const $Text = styled(Text);
-const $TextInput = styled(TextInput);
-const $Image = styled(Image);
-const $TouchableWithoutFeedback = styled(TouchableWithoutFeedback);
-const $Link = styled(Link);
-import { useState } from 'react'
+
+import React, { useState } from 'react'
+import { $Image, $Link, $Text, $TextInput, $TouchableWithoutFeedback, $View } from './NativeWind';
 interface FormValidationSchema {
     email: boolean;
     password: boolean;

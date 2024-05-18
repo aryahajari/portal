@@ -1,16 +1,10 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native'
-import { styled } from 'nativewind'
-const $View = styled(View);
-const $Text = styled(Text);
-const $Image = styled(Image);
-const $TouchableOpacity = styled(TouchableOpacity);
-//---------------------------------------------------------------------------------------------------------
 import { getDocumentAsync } from 'expo-document-picker';
 import { firebaseFirestore, firebaseStorage } from '@/FirebaseConfig';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useUserData } from '@/context/UserDataProvider'
 import { useEffect, useState } from 'react';
 import { doc, setDoc } from 'firebase/firestore';
+import { $Image, $Text, $TouchableOpacity, $View } from './NativeWind';
 
 const SetProfilePicture = () => {
     const [PFPurl, setPFPurl] = useState<string | null>(null);

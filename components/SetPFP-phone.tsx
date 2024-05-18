@@ -1,19 +1,11 @@
-import React, { useEffect } from 'react'
-import { View, Text, Image, TouchableOpacity } from 'react-native'
-import { styled } from 'nativewind'
-const $View = styled(View);
-const $Text = styled(Text);
-const $Image = styled(Image);
-const $TouchableOpacity = styled(TouchableOpacity);
-import { useState } from 'react'
-//---------------------------------------------------------------------------------------------------------
-
+import React, { useEffect, useState } from 'react'
 import { firebaseStorage, firebaseFirestore } from '@/FirebaseConfig';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { setDoc, doc } from 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import { useUserData } from '@/context/UserDataProvider'
+import { $Image, $Text, $TouchableOpacity, $View } from './NativeWind';
 const copyDocumentToLocalUri = async (contentUri: string) => {
     try {
         const fileInfo = await FileSystem.getInfoAsync(contentUri);
