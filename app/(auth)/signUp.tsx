@@ -48,14 +48,12 @@ const signUp = () => {
     }
     const handleSignUp = async () => {
         console.log(formData.email, formData.password)
-        await createUserWithEmailAndPassword(firebaseAuth, formData.email, formData.password)
-            .then(async (usr) => {
-                await InitializeUser(usr.user.uid, usr.user.email ?? '')
-            })
-            .catch((error: AuthError) => {
-                console.log('code : ', error.code)
-                console.log('message : ', error.message)
-            })
+        try {
+            const userCredential = await createUserWithEmailAndPassword(firebaseAuth, formData.email, formData.password);
+            await InitializeUser(userCredential.user.uid, userCredential.user.email ?? '');
+        } catch (error) {
+            console.error('Authentication/Document error:', error);
+        }
     }
     return (
         <>

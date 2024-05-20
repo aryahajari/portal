@@ -1,7 +1,7 @@
 import { ImageSourcePropType, ColorValue } from 'react-native'
 
 import React from 'react'
-import { Tabs } from 'expo-router'
+import { Stack, Tabs } from 'expo-router'
 import { icons } from '../../constants'
 import { SelfFeedContextProvider } from '@/context/SelfFeedProvider'
 import { StatusBar } from 'expo-status-bar';
@@ -65,6 +65,21 @@ const TabsLayout = () => {
                                     color={color}
                                     focused={focused}
                                     name="Home"
+                                />
+                            )
+                        }}
+                    />
+                    <Tabs.Screen
+                        name="search"
+                        options={{
+                            title: 'Sreach',
+                            headerShown: false,
+                            tabBarIcon: ({ color, focused }) => (
+                                <TabIcon
+                                    icon={icons.search}
+                                    color={color}
+                                    focused={focused}
+                                    name="Search"
                                 />
                             )
                         }}

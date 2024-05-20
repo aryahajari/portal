@@ -7,7 +7,7 @@ import ShowPFP from '@/components/ShowPFP';
 import { useUserData } from '@/context/UserDataProvider';
 import { useRouter } from 'expo-router'
 import KeyboardCloser from '@/components/KeyboardCloser';
-import { $Image, $ScrollView, $TextInput, $TouchableOpacity, $View } from '@/components/NativeWind';
+import { $Image, $ScrollView, $Text, $TextInput, $TouchableOpacity, $View } from '@/components/NativeWind';
 //------------------------------------------------------------------------------------------------------------
 import { ref, uploadBytes } from 'firebase/storage'
 import { serverTimestamp, collection, doc, runTransaction } from 'firebase/firestore';
@@ -83,17 +83,18 @@ const create = () => {
             </$View>
             <$View className='w-full h-full flex-row lg:w-1/2'>
                 <$View className='w-1/6  pt-2 '>
-                    <ShowPFP URL={userData?.pfp} />
+                    <ShowPFP URL={userData?.pfp} size={'w-14 h-14'} />
                 </$View>
                 <$ScrollView
                     className='w-5/6 h-full pr-2 '
                     showsVerticalScrollIndicator={false}
                 //contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
                 >
+                    <$Text className='text-secondary-100 text-base pl-2'>{userData?.userName}</$Text>
                     <$TextInput
                         returnKeyType="default"
                         placeholder='Caption ....'
-                        className=' rounded-lg  text-white p-2 placeholder-white w-full pt-2'
+                        className=' rounded-lg  text-white p-2 placeholder-white w-full '
                         placeholderTextColor={'white'}
                         multiline
                         numberOfLines={Platform.OS === 'web' ? 20 : 1}

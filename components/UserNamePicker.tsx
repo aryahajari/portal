@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useUserData } from '@/context/UserDataProvider';
 import { firebaseAuth } from '@/FirebaseConfig';
 import { $Text, $TextInput, $TouchableOpacity, $View } from './NativeWind';
@@ -8,9 +8,11 @@ import { $Text, $TextInput, $TouchableOpacity, $View } from './NativeWind';
 const UserNamePicker = () => {
     const userData = useUserData();
     const [username, setUsername] = useState(userData?.userName || '');
+    useEffect(() => {
+        setUsername(userData?.userName || '');
+    }, [userData]);
     const [isAvailable, setIsAvailable] = useState(true);
     const [showButton, setShowButton] = useState(false);
-
     const handleUsernameChange = async (newUsername: string) => {
         setUsername(newUsername);
         if (newUsername === '' || newUsername === userData?.userName) {

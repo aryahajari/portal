@@ -38,7 +38,7 @@ const setPFP = () => {
     const [PFPurl, setPFPurl] = useState<string | null>(null);
     const userData = useUserData();
     useEffect(() => {
-        if (userData !== null) {
+        if (userData !== null && userData.pfp !== undefined) {
             getDownloadURL(ref(firebaseStorage, userData.pfp))
                 .then((url) => {
                     setPFPurl(url);
@@ -55,7 +55,7 @@ const setPFP = () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
-            aspect: [4, 3],
+            aspect: [1, 1],
             quality: 1,
         });
         if (!(result.assets && result.assets[0].uri)) return;

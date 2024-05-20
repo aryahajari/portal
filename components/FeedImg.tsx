@@ -8,11 +8,11 @@ const FeedImg = (props: { URL: string, aspectRatio: Number }) => {
     return (
         <>
             {props.URL &&
-                <$View className='w-full flex-1' key={props.URL}>
+                <$View className='w-full flex-1 p-1' key={props.URL}>
                     <$Image
                         source={{ uri: props.URL }}
                         resizeMode='contain'
-                        className='rounded-xl p-2'
+                        className='rounded-xl '
                         style={{ width: '100%', height: '100%', aspectRatio: props.aspectRatio.toString() }}
 
                     />

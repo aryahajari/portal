@@ -22,6 +22,7 @@ export interface FeedDbSchema {
 export interface UserSchema {
     email: string;
     name: string;
+    bio: string;
     uid: string;
     pfp: string;
     userName: string;

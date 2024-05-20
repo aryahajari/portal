@@ -47,7 +47,7 @@ const GetPhoto = (props: { img: imgSchema | null, setImg: React.Dispatch<React.S
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
-            aspect: [4, 3],
+            //aspect:,
             quality: 1,
         });
         if (!(result.assets && result.assets[0].uri)) return;

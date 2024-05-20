@@ -34,22 +34,41 @@ export async function getUserProfileData(uid: string) {
     return docSnap.data() as UserSchema;
 }
 
-export async function getUserFeedData(uid: string) {
-    const q = query(
+export async function getUserFeedData(uid: string): Promise<FeedSchema[]> {
+    const feedQuery = query(
         collection(firebaseFirestore, "feeds"),
         where("uid", "==", uid),
         orderBy('createdAt')
     );
-    const querySnapshot = await getDocs(q);
-    const data = querySnapshot.docs.map((doc) => ({ ...doc.data(), feedId: doc.id }) as FeedDbSchema);
-    const data2 = data.map(async (item) => {
-        if (!item.img) return item;
-        const { url, aspectRatio } = await getImg(item.img);
-        return { ...item, img: { url, aspectRatio } };
-    });
-    const data3 = await Promise.all(data2) as FeedSchema[];
-    return data3;
 
+    const querySnapshot = await getDocs(feedQuery);
+    const feeds = querySnapshot.docs.map(doc => ({ ...doc.data(), feedId: doc.id }) as FeedDbSchema);
+
+    const enhancedFeeds = feeds.map(async feed => {
+        if (!feed.img) return feed;
+
+        const { url, aspectRatio } = await getImg(feed.img);
+        return { ...feed, img: { url, aspectRatio } };
+    });
+
+    return await Promise.all(enhancedFeeds) as FeedSchema[];
+}
+export async function getUidFromUserName(userName: string): Promise<string | null> {
+    try {
+        const userQuery = query(
+            collection(firebaseFirestore, "users"),
+            where("userName", "==", userName)
+        );
+        const querySnapshot = await getDocs(userQuery);
+        if (querySnapshot.empty) {
+            return null;
+        }
+        const userDoc = querySnapshot.docs[0].data() as UserSchema;
+        return userDoc.uid;
+    } catch (error) {
+        console.error('Failed to retrieve user UID:', error);
+        throw new Error('Error retrieving user UID from Firestore.');
+    }
 }
 export async function getImg(path: string) {
     const url = await getDownloadURL(ref(firebaseStorage, path));
