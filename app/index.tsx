@@ -17,10 +17,10 @@ const App = () => {
   return (
     <>
       <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="(userProfile)" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ headerShown: true }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: true }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: true }} />
+        <Stack.Screen name="(userProfile)" options={{ headerShown: true }} />
       </Stack>
       {/* is signedIn is null do nothing if signedIn is true do nothing if signedIn is false redirect to logIn */}
       {authData.isSignedIn === null || authData.isSignedIn === true || <Redirect href={'/logIn'} />}

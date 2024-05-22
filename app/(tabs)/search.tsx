@@ -7,6 +7,7 @@ import { UserSchema } from '@/context/schema'
 //---------------------------------------------------------------
 import { firebaseFirestore } from '@/FirebaseConfig'
 import { collection, getDocs, query, where } from "firebase/firestore";
+import ShowPFP from '@/components/ShowPFP'
 const usersRef = collection(firebaseFirestore, "users");
 const search = () => {
     const [searchText, setSearchText] = React.useState<string>('');
@@ -34,22 +35,22 @@ const search = () => {
         //     console.log(`${doc.id} => ${doc.data().userName}`);
         // });
         setUsers(querySnapshot.docs.map(doc => doc.data() as UserSchema))
-        console.log(users)
     }
     return (
         <$View className='flex-1 bg-dark'>
-            <$View className='flex-1 m-2 bg-dark lg:w-1/2 lg:mr-auto lg:ml-auto'>
-                <$View className='flex-row justify-around'>
+            <$View className='flex-1 m-2 bg-dark lg:w-1/2 lg:mr-auto lg:ml-auto justify-center'>
+                <$View className='flex-row justify-around mb-2'>
                     <$TouchableOpacity
-                        onPress={() => { router.push('home') }}
+                        onPress={() => { }}
+                        className='mt-auto mb-auto'
                     >
                         <$Image
-                            source={icons.leftArrow}
-                            className='w-7 h-7 lg:w-10 lg:h-10'
+                            source={icons.search}
+                            className='w-6 h-6 lg:w-8 lg:h-8'
                         />
                     </$TouchableOpacity>
                     <$TextInput
-                        className='bg-gray-700 w-[90%] pl-4 rounded-full'
+                        className='bg-gray-700 w-[90%] pl-4 rounded-full h-10'
                         placeholder='Search'
                         placeholderTextColor='white'
                         onChangeText={setSearchText}
@@ -58,14 +59,19 @@ const search = () => {
                 </$View>
                 <$ScrollView className='w-full self-center' showsVerticalScrollIndicator={false}>
                     {users.map((userData, count) => (
-                        <$Link href={{
-                            pathname: "/(userProfile)/[userName]",
-                            params: { userName: userData.userName }
-                        }}>
-                            <$View className='flex-row justify-between p-3'>
-                                <$Text className='text-white'>{userData.userName}</$Text>
-                            </$View>
-                        </$Link>
+                        <$View className='border-b-[1px] border-stone-300' key={userData.uid}>
+                            <$Link
+                                className='w-full'
+                                href={{
+                                    pathname: "/(userProfile)/[userName]",
+                                    params: { userName: userData.userName }
+                                }}>
+                                <$View className='flex-row items-center p-3  w-full'>
+                                    <ShowPFP size={'h-16 w-16'} URL={userData.pfp} />
+                                    <$Text className='text-white text-lg pl-3'>{userData.userName}</$Text>
+                                </$View>
+                            </$Link>
+                        </$View>
                     ))}
                 </$ScrollView>
             </$View>

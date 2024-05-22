@@ -9,7 +9,7 @@ import { useRouter } from 'expo-router'
 import KeyboardCloser from '@/components/KeyboardCloser';
 import { $Image, $ScrollView, $Text, $TextInput, $TouchableOpacity, $View } from '@/components/NativeWind';
 //------------------------------------------------------------------------------------------------------------
-import { ref, uploadBytes } from 'firebase/storage'
+import { ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
 import { serverTimestamp, collection, doc, runTransaction } from 'firebase/firestore';
 import { firebaseFirestore } from '@/FirebaseConfig';
 import { firebaseStorage } from '@/FirebaseConfig';
@@ -30,7 +30,7 @@ const create = () => {
             await runTransaction(firebaseFirestore, async (transaction) => {
                 let ref: null | string = null;
                 if (img) {
-                    const snapshot = await uploadBytes(storageRef, img.file, { customMetadata: { 'aspectRatio': img.aspectRatio.toString() } });
+                    const snapshot = await uploadBytesResumable(storageRef, img.file, { customMetadata: { 'aspectRatio': img.aspectRatio.toString() } });
                     ref = snapshot.ref.fullPath;
                 }
                 // Create a new document in feeds collection

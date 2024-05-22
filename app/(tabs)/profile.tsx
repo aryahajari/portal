@@ -46,7 +46,7 @@ const profile = () => {
                 </$View>
             </$View>
             <$ScrollView className='w-full self-center' showsVerticalScrollIndicator={false}>
-                <ProfileInfo userData={userData} />
+                <ProfileInfo feed={feed ? feed.length : 0} userData={userData} />
                 <FeedLoader feed={feed} userData={userData} />
             </$ScrollView>
         </$View>

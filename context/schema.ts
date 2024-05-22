@@ -27,6 +27,7 @@ export interface UserSchema {
     pfp: string;
     userName: string;
     dateOfBirth: string;
+    following: string[];
 }
 export interface AuthContextSchema {
     setIsSignedIn: Dispatch<SetStateAction<boolean>>;

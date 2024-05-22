@@ -20,6 +20,7 @@ const FeedLoader = ({ feed, userData }: { feed: FeedSchema[] | null, userData: U
                             </$View>
                             <$Text className='text-white text-xs mt-1'>{item.createdAt.toDate().toDateString().slice(3)}</$Text>
                         </$View>
+                        {/* {item?.caption && <$Text className='text-white pl-1 mb-2 text-s'>{item.caption}</$Text>} */}
                         <$Text className='text-white pl-1 mb-2 text-s'>{item.caption ? item.caption : null}</$Text>
                         {item?.img &&
                             <FeedImg URL={item.img.url} aspectRatio={item.img.aspectRatio} />

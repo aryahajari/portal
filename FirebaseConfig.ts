@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, initializeFirestore, doc, getDoc, collection, where, query, orderBy, getDocs } from "firebase/firestore";
+import { getFirestore, initializeFirestore, doc, getDoc, collection, where, query, orderBy, getDocs, getCountFromServer } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, getMetadata } from 'firebase/storage'
 import { UserSchema, AuthContextSchema, FeedSchema, FeedDbSchema } from '@/context/schema'
 const firebaseConfig = {
@@ -38,7 +38,7 @@ export async function getUserFeedData(uid: string): Promise<FeedSchema[]> {
     const feedQuery = query(
         collection(firebaseFirestore, "feeds"),
         where("uid", "==", uid),
-        orderBy('createdAt')
+        orderBy('createdAt', 'desc')
     );
 
     const querySnapshot = await getDocs(feedQuery);
@@ -69,6 +69,13 @@ export async function getUidFromUserName(userName: string): Promise<string | nul
         console.error('Failed to retrieve user UID:', error);
         throw new Error('Error retrieving user UID from Firestore.');
     }
+}
+export async function getFollowerNumber(uid: string) {
+    const q = query(collection(firebaseFirestore, "users"),
+        where("following", "array-contains", uid)
+    );
+    const num = await getCountFromServer(q);
+    return num.data();
 }
 export async function getImg(path: string) {
     const url = await getDownloadURL(ref(firebaseStorage, path));
