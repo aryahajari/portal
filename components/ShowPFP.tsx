@@ -1,10 +1,10 @@
 import { firebaseStorage } from '@/FirebaseConfig';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useState } from 'react';
-import { $View } from './NativeWind';
+import { $Image, $View } from './NativeWind';
 import { Image } from 'expo-image';
 import { styled } from 'nativewind'
-const $Image = styled(Image)
+const EImage = styled(Image)
 const ShowPFP = (props: { URL: string | undefined, size: string }) => {
     const [PFPurl, setPFPurl] = useState<string | null>(null);
     if (props?.URL) {
@@ -18,7 +18,8 @@ const ShowPFP = (props: { URL: string | undefined, size: string }) => {
             <$Image
                 className={`lg:w-16 lg:h-16 rounded-full bg-primary-100 border-solid ${props.size}`}
                 source={PFPurl ? { uri: PFPurl } : require('@/assets/images/profile.png')}
-                contentFit='cover'
+                // contentFit='cover'
+                resizeMode='cover'
             />
         </$View>
     )
