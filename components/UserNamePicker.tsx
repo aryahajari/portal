@@ -8,9 +8,6 @@ import { $Text, $TextInput, $TouchableOpacity, $View } from './NativeWind';
 const UserNamePicker = () => {
     const userData = useUserData();
     const [username, setUsername] = useState(userData?.userName || '');
-    useEffect(() => {
-        setUsername(userData?.userName || '');
-    }, [userData]);
     const [isAvailable, setIsAvailable] = useState(true);
     const [showButton, setShowButton] = useState(false);
     const handleUsernameChange = async (newUsername: string) => {
@@ -51,7 +48,7 @@ const UserNamePicker = () => {
                 : null
             }
             <$View
-                className={`w-full h-10 flex-row border-[2px] rounded-lg ${isAvailable ? 'border-primary bg-primary' : 'border-red-500 bg-red-500'}`}
+                className={`w-full h-10 flex-row border-[2px] rounded-lg ${isAvailable || !showButton ? 'border-primary bg-primary' : 'border-red-500 bg-red-500'}`}
             >
                 <$TextInput
                     style={Platform.OS === 'web' ? { outlineStyle: 'none' } : { borderColor: '#000' }}
@@ -61,7 +58,7 @@ const UserNamePicker = () => {
                     onChangeText={handleUsernameChange}
                     placeholderTextColor={'black'}
                 />
-                {username !== '' && username !== userData?.userName && (
+                {username !== '' && showButton && (
                     <$TouchableOpacity
                         className={`h-full justify-center items-center rounded-r-lg pl-2 pr-1 ${isAvailable ? 'bg-primary' : 'bg-red-500'}`}
                         onPress={confirmUsername}

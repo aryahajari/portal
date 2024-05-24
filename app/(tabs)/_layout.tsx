@@ -1,11 +1,12 @@
 import { ImageSourcePropType, ColorValue } from 'react-native'
 
 import React from 'react'
-import { Stack, Tabs } from 'expo-router'
+import { Stack, Tabs, router } from 'expo-router'
 import { icons } from '../../constants'
 import { SelfFeedContextProvider } from '@/context/SelfFeedProvider'
 import { StatusBar } from 'expo-status-bar';
 import { $Image, $SafeAreaView, $View } from '@/components/NativeWind'
+import { UserData, useUserData } from '@/context/UserDataProvider'
 
 
 interface TabIconInSchema {
@@ -53,6 +54,7 @@ const TabsLayout = () => {
                             elevation: 0,
                         }
                     }}
+
                 >
                     <Tabs.Screen
                         name="home"

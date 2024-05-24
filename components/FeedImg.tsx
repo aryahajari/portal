@@ -10,10 +10,10 @@ const FeedImg = (props: { URL: string, aspectRatio: Number }) => {
         <>
             {props.URL &&
                 <$View className='w-full flex-1 p-1' key={props.URL}>
-                    <$Image
+                    <EImage
                         source={{ uri: props.URL }}
-                        // contentFit='contain'
-                        resizeMode='contain'
+                        contentFit='contain'
+                        //resizeMode='contain'
                         className='rounded-xl '
                         style={{ width: '100%', height: '100%', aspectRatio: props.aspectRatio.toString() }}
 

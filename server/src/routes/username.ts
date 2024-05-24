@@ -13,7 +13,7 @@ async function setUserName(username: string, uid: string) {
             if (!snapshot.empty) {
                 throw new Error('Username already taken');
             }
-            transaction.update(usersRef.doc(uid), { userName: username });
+            transaction.update(usersRef.doc(uid), { userName: username.toLowerCase() });
         });
     } catch (error) {
         throw error;
@@ -22,7 +22,7 @@ async function setUserName(username: string, uid: string) {
 
 async function isUserNameAvailabe(username: string) {
     const usersRef = db.collection('users');
-    const query = usersRef.where('userName', '==', username).limit(1);
+    const query = usersRef.where('userName', '==', username.toLowerCase()).limit(1);
     const snapshot = await query.get();
     return snapshot.empty;
 }
@@ -38,7 +38,7 @@ router.get('/checkUsername/:id', (req, res) => {
         });
 });
 router.post('/setUsername', async (req, res) => {
-    const { username, token } = req.body;
+    const { username, token } = req.body as { username: string, token: string };
 
     if (!token) {
         return res.status(401).json({ message: 'Authorization token is missing.' });
@@ -47,7 +47,7 @@ router.post('/setUsername', async (req, res) => {
     try {
         const decodedToken = await auth.verifyIdToken(token);
         console.log('Username:', decodedToken.uid);
-        await setUserName(username, decodedToken.uid);
+        await setUserName(username.toLowerCase(), decodedToken.uid);
         res.status(200).json({ message: 'User created successfully!' });
     } catch (Err) {
         const error = Err as AuthError;

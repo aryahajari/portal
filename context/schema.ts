@@ -1,37 +1,40 @@
-import { Timestamp } from "firebase/firestore";
+import { Timestamp, collection } from "firebase/firestore";
 import { Dispatch, SetStateAction } from "react";
-
-export interface FeedSchema {
-    feedId: string;
-    uid: string;
-    img: { url: string, aspectRatio: number } | undefined;
-    caption: string;
-    likes: number;
-    comments: string[];
-    createdAt: Timestamp;
-}
 export interface FeedDbSchema {
     feedId: string;
+    userName: string;
+    name: string;
+    pfp: string;
     uid: string;
     img: string | undefined;
     caption: string;
-    likes: number;
-    comments: string[];
     createdAt: Timestamp;
 }
+export interface FeedSchema {
+    feedId: string;
+    userName: string;
+    name: string;
+    pfp: string;
+    uid: string;
+    img: { url: string, aspectRatio: number, type: string | undefined } | undefined;
+    caption: string;
+    createdAt: Timestamp;
+}
+
 export interface UserSchema {
     email: string;
     name: string;
     bio: string;
     uid: string;
-    pfp: string;
+    pfp: string | undefined;
     userName: string;
     dateOfBirth: string;
+    lastFeedSeen: Timestamp | undefined;
     following: string[];
 }
 export interface AuthContextSchema {
     setIsSignedIn: Dispatch<SetStateAction<boolean>>;
     setUser: Dispatch<SetStateAction<string | null>>;
     userId: string;
-    isSignedIn: boolean;
+    isSignedIn: boolean | null;
 }

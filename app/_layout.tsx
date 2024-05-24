@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { Slot } from 'expo-router'
+import { Slot, Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar';
 import { NativeWindStyleSheet } from "nativewind";
 import { GlobalProvider } from '../context/AuthDataProvider';
@@ -15,7 +15,12 @@ const RootLayout = () => {
       <StatusBar style='light' />
       <GlobalProvider>
         <GlobalUserProvider>
-          <Slot />
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="(userProfile)" options={{ headerShown: false }} />
+          </Stack>
         </GlobalUserProvider>
       </GlobalProvider>
     </>

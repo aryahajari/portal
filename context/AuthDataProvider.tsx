@@ -1,6 +1,6 @@
 import { firebaseAuth } from '@/FirebaseConfig';
 import { useRouter } from 'expo-router';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { AuthContextSchema } from './schema';
 
@@ -18,13 +18,12 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     useEffect(() => {
         onAuthStateChanged(firebaseAuth, (usr) => {
             if (usr) {
+                console.log(usr.uid);
                 setUser(usr.uid);
                 setIsSignedIn(true);
-                router.replace('/home');
             } else {
                 setUser(null);
                 setIsSignedIn(false);
-                router.replace('/logIn');
             }
         });
     }, []);

@@ -25,7 +25,6 @@ export const GlobalUserProvider: React.FC<{ children: ReactNode }> = ({ children
                 if (documentSnapshot.exists()) {
                     const data = documentSnapshot.data() as UserSchema;
                     setUserData(data);
-                    (!(data?.email && data?.userName && data?.dateOfBirth && data?.pfp && data?.bio && data?.name)) && router.replace('userInfo')
                 } else {
                     console.error("User data not found", userId);
                     setUserData(null);

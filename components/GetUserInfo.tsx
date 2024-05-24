@@ -6,7 +6,7 @@ import { firebaseFirestore } from '@/FirebaseConfig'
 import { doc, setDoc } from 'firebase/firestore'
 const GetUserInfo = () => {
     const userData = useUserData();
-    const [name, setName] = useState('');
+    const [name, setName] = useState(userData?.name || '');
     const handleNameSubmit = async () => {
         if (name === '' || name === userData?.name) {
             return;
@@ -19,12 +19,11 @@ const GetUserInfo = () => {
             console.log(e)
         }
     }
-    const [bio, setBio] = useState('');
+    const [bio, setBio] = useState(userData?.bio || '');
     const handleBioSubmit = async () => {
-        if (bio === '' || bio === userData?.bio) {
+        if (!userData || bio === '' || bio === userData?.bio) {
             return;
         }
-        if (userData === null) return;
         const docRef = doc(firebaseFirestore, "users", userData.uid);
         try {
             await setDoc(docRef, { bio: bio }, { merge: true });
@@ -32,13 +31,9 @@ const GetUserInfo = () => {
             console.log(e)
         }
     }
-    useEffect(() => {
-        setName(userData?.name || '');
-        setBio(userData?.bio || '');
-    }, [userData])
     return (
         <>
-            <$View className='w-full mt-2 mb-2'>
+            <$View className={`mt-2 mb-2 ${Platform.OS === 'web' && 'flex-1'}`}>
                 {userData?.name || name !== '' ?
                     <$Text className='text-white'>Shown Name</$Text>
                     : null
@@ -64,7 +59,7 @@ const GetUserInfo = () => {
                     )}
                 </$View>
             </$View>
-            <$View className='w-full mt-2 mb-2'>
+            <$View className={`flex-1 mt-2 ${Platform.OS === 'web' && 'mb-5'}`}>
                 {userData?.bio || bio !== '' ?
                     <$Text className='text-white'>Bio</$Text>
                     : null
@@ -76,7 +71,7 @@ const GetUserInfo = () => {
                         style={Platform.OS === 'web' ? { outlineStyle: 'none' } : { borderColor: '#000' }}
                         value={bio}
                         multiline
-                        numberOfLines={Platform.OS === 'web' ? 20 : 1}
+                        numberOfLines={Platform.OS === 'web' ? 3 : 1}
                         className={`border-0 text-black min-h-[30px] p-1 h-full flex-1 bg-white placeholder:text-black rounded-md`}
                         placeholder={userData?.bio || 'bio'}
                         placeholderTextColor={'black'}

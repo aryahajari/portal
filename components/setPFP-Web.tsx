@@ -10,7 +10,7 @@ const SetProfilePicture = () => {
     const [PFPurl, setPFPurl] = useState<string | null>(null);
     const userData = useUserData();
     useEffect(() => {
-        if (userData !== null) {
+        if (userData !== null && userData?.pfp) {
             getDownloadURL(ref(firebaseStorage, userData.pfp))
                 .then((url) => {
                     setPFPurl(url);

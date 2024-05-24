@@ -47,7 +47,7 @@ const signUp = () => {
     return (
         <>
             <$ScrollView className='bg-dark'>
-                <$View className='justify-center self-center w-2/3 lg:w-1/5'>
+                <$View className='justify-center self-center w-2/3 lg:w-1/3'>
                     <$Image
                         source={images.logoGreen}
                         resizeMode='contain'

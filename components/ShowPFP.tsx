@@ -15,11 +15,11 @@ const ShowPFP = (props: { URL: string | undefined, size: string }) => {
     }
     return (
         <$View className='items-center justify-center'>
-            <$Image
+            <EImage
                 className={`lg:w-16 lg:h-16 rounded-full bg-primary-100 border-solid ${props.size}`}
                 source={PFPurl ? { uri: PFPurl } : require('@/assets/images/profile.png')}
-                // contentFit='cover'
-                resizeMode='cover'
+                contentFit='cover'
+            //resizeMode='cover'
             />
         </$View>
     )

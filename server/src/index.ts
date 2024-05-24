@@ -1,5 +1,5 @@
 import express from 'express';
-import productRouter from './routes/test';
+// import productRouter from './routes/test';
 import userRouter from './routes/username';
 const cors = require('cors');
 
@@ -11,7 +11,7 @@ app.use(cors());
 
 app.use(express.json());
 app.use(userRouter);
-app.use('/api', productRouter);
+// app.use('/api', productRouter);
 
 app.get('/', (req, res) => {
     res.send('Hello World with Script!');

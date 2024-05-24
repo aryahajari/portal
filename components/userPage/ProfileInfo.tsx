@@ -27,7 +27,7 @@ const profileInfo = (props: { userData: UserSchema, feed: number }) => {
               <$Text className='text-white'>Follower</$Text>
             </$View>
             <$View className='justify-center items-center'>
-              <$Text className='text-white'>{props.userData.following.length}</$Text>
+              <$Text className='text-white'>{props.userData?.following ? props.userData.following.length : 0}</$Text>
               <$Text className='text-white'>Following</$Text>
             </$View>
           </$View>

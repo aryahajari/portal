@@ -58,7 +58,7 @@ const userProfile = () => {
                     userData={userData}
                     feed={feed?.length || 0}
                 />
-                <FeedLoader feed={feed} userData={userData} />
+                {feed && <FeedLoader feeds={feed} />}
             </$ScrollView>
         </$View>
     );

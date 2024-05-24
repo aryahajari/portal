@@ -24,7 +24,8 @@ const create = () => {
     }
     const [img, setImg] = useState<imgSchema | null>(null);
     const handleSubmit = async () => {
-        const storageRef = ref(firebaseStorage, `${userData?.uid}/${Date.now()}`);
+        if (!userData) return;
+        const storageRef = ref(firebaseStorage, `${userData.uid}/${Date.now()}`);
         try {
             // Start a transaction
             await runTransaction(firebaseFirestore, async (transaction) => {
@@ -36,12 +37,17 @@ const create = () => {
                 // Create a new document in feeds collection
                 const feedsRef = doc(collection(firebaseFirestore, "feeds"));
                 transaction.set(feedsRef, {
+                    name: userData.name,
+                    userName: userData.userName,
+                    pfp: userData.pfp,
+                    uid: userData.uid,
                     caption: caption,
                     img: ref,
-                    uid: userData?.uid,
                     createdAt: serverTimestamp()
                 });
             });
+            setCaption('');
+            setImg(null);
             router.replace('home');
         } catch (error) {
             console.error("Transaction failed: ", error);

@@ -25,7 +25,7 @@ const search = () => {
         const end = substring.substring(0, substring.length - 1) + String.fromCharCode(substring.charCodeAt(substring.length - 1) + 1);
 
         // Create a query that searches for usernames within the range
-        const q = query(usersRef, where("userName", ">=", start), where("userName", "<", end));
+        const q = query(usersRef, where("userName", ">=", start.toLowerCase()), where("userName", "<", end.toLowerCase()));
 
         // Execute the query
         const querySnapshot = await getDocs(q);
@@ -63,7 +63,7 @@ const search = () => {
                             <$Link
                                 className='w-full'
                                 href={{
-                                    pathname: "/(userProfile)/[userName]",
+                                    pathname: "(userProfile)/[userName]",
                                     params: { userName: userData.userName }
                                 }}>
                                 <$View className='flex-row items-center p-3  w-full'>

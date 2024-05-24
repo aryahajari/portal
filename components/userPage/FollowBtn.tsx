@@ -6,7 +6,7 @@ import { firebaseFirestore } from '@/FirebaseConfig'
 const FollowBtn = ({ targetId }: { targetId: string }) => {
     const self = useUserData()
     if (!self) return null
-    const isFollowed = self.following.includes(targetId)
+    const isFollowed = self?.following && self.following.includes(targetId)
     async function followUser() {
         console.log('follow')
         if (!self) return

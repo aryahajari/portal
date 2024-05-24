@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, initializeFirestore, doc, getDoc, collection, where, query, orderBy, getDocs, getCountFromServer } from "firebase/firestore";
+import { getFirestore, initializeFirestore, doc, getDoc, collection, where, query, orderBy, getDocs, serverTimestamp, getCountFromServer, setDoc, limit, Query } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, getMetadata } from 'firebase/storage'
 import { UserSchema, AuthContextSchema, FeedSchema, FeedDbSchema } from '@/context/schema'
 const firebaseConfig = {
@@ -19,6 +19,7 @@ import { initializeAuth, getReactNativePersistence, type Auth } from 'firebase/a
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from "react-native";
 import { getAuth } from 'firebase/auth/web-extension';
+import { Timestamp } from "@google-cloud/firestore";
 
 export let firebaseAuth: Auth;
 if (Platform.OS === 'web') {
@@ -33,7 +34,35 @@ export async function getUserProfileData(uid: string) {
     const docSnap = await getDoc(docRef);
     return docSnap.data() as UserSchema;
 }
+export async function getFollowingFeedData(followingList: string[], lastFeedSeen: Timestamp | undefined) {
+    let feedQuery: Query;
+    if (lastFeedSeen) {
+        feedQuery = query(
+            collection(firebaseFirestore, "feeds"),
+            where("uid", "in", followingList),
+            where("createdAt", "<", lastFeedSeen),
+            orderBy('createdAt', 'desc'),
+            limit(10)
+        );
+    } else {
+        feedQuery = query(
+            collection(firebaseFirestore, "feeds"),
+            where("uid", "in", followingList),
+            orderBy('createdAt', 'desc'),
+            limit(10)
+        );
+    }
+    const querySnapshot = await getDocs(feedQuery);
+    const feeds = querySnapshot.docs.map(doc => ({ ...doc.data(), feedId: doc.id }) as FeedDbSchema);
+    const enhancedFeeds = feeds.map(async feed => {
+        if (!feed.img) return feed;
+        const img = await getImg(feed.img);
+        return { ...feed, img };
+    });
+    const ret = await Promise.all(enhancedFeeds) as FeedSchema[];
+    return ret;
 
+}
 export async function getUserFeedData(uid: string): Promise<FeedSchema[]> {
     const feedQuery = query(
         collection(firebaseFirestore, "feeds"),
@@ -46,9 +75,8 @@ export async function getUserFeedData(uid: string): Promise<FeedSchema[]> {
 
     const enhancedFeeds = feeds.map(async feed => {
         if (!feed.img) return feed;
-
-        const { url, aspectRatio } = await getImg(feed.img);
-        return { ...feed, img: { url, aspectRatio } };
+        const img = await getImg(feed.img);
+        return { ...feed, img };
     });
 
     return await Promise.all(enhancedFeeds) as FeedSchema[];
@@ -80,8 +108,18 @@ export async function getFollowerNumber(uid: string) {
 export async function getImg(path: string) {
     const url = await getDownloadURL(ref(firebaseStorage, path));
     const metadata = await getMetadata(ref(firebaseStorage, path));
+    const type = metadata?.contentType?.split('/')[0];
     const aspectRatio = Number(metadata?.customMetadata?.aspectRatio);
-    return { url, aspectRatio };
+    return { url, aspectRatio, type };
+}
+export async function getPfp(path: string) {
+    const url = await getDownloadURL(ref(firebaseStorage, path));
+    return url;
+}
+export async function updateUserLastFeedSeen(uid: string) {
+    const userDoc = doc(firebaseFirestore, "users", uid);
+    await setDoc(userDoc, { lastFeedSeen: serverTimestamp() }, { merge: true });
+
 }
 
 export const firebaseFirestore = getFirestore(firebaseApp);
