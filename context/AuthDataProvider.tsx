@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { AuthContextSchema } from './schema';
+import { Platform } from 'react-native';
 
 const AuthContext = createContext({} as AuthContextSchema);
 export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -17,13 +18,22 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     } as AuthContextSchema;
     useEffect(() => {
         onAuthStateChanged(firebaseAuth, (usr) => {
+            //signOut(firebaseAuth);
             if (usr) {
+                //signOut(firebaseAuth);
                 console.log(usr.uid);
                 setUser(usr.uid);
                 setIsSignedIn(true);
+                if (Platform.OS === 'web') {
+                    router.replace('/home')
+                }
             } else {
+                console.log('not signed in');
                 setUser(null);
                 setIsSignedIn(false);
+                if (Platform.OS === 'web') {
+                    router.replace('/logIn')
+                }
             }
         });
     }, []);

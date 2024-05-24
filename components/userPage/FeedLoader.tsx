@@ -4,7 +4,7 @@ import { FeedSchema, UserSchema } from '@/context/schema'
 import { $Text, $View } from '../NativeWind'
 import ShowPFP from '../ShowPFP'
 import FeedImg from '../FeedImg'
-import FeedVideo from '../FeedVideo'
+// import FeedVideo from '../FeedVideo'
 const FeedLoader = ({ feeds }: { feeds: FeedSchema[] }) => {
     return (
         <>
@@ -23,17 +23,10 @@ const FeedLoader = ({ feeds }: { feeds: FeedSchema[] }) => {
                         </$View>
                         {/* {item?.caption && <$Text className='text-white pl-1 mb-2 text-s'>{item.caption}</$Text>} */}
                         <$Text className='text-white pl-1 mb-2 text-s'>{item.caption ? item.caption : null}</$Text>
-                        {/* {item?.img &&
+                        {item?.img &&
                             <FeedImg URL={item.img.url} aspectRatio={item.img.aspectRatio} />
-                        } */}
-                        {item?.img && (item.img.type === 'image' ? <FeedImg URL={item.img.url} aspectRatio={item.img.aspectRatio} /> : <FeedVideo URL={item.img.url} aspectRatio={item.img.aspectRatio} />)}
-                        {/* {item?.img && item.img.type === 'video' &&
-                            <FeedVideo
-                                URL={item.img.url}
-                                aspectRatio={item.img.aspectRatio}
-                            />
-                        } */}
-                        {/* {item?.img && item.img.type ===} */}
+                        }
+                        {/* {item?.img && (item.img.type === 'image' ? <FeedImg URL={item.img.url} aspectRatio={item.img.aspectRatio} /> : <FeedVideo URL={item.img.url} aspectRatio={item.img.aspectRatio} />)} */}
                     </$View>
                 </$View>
 

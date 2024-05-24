@@ -71,6 +71,7 @@ const signUp = () => {
         try {
             const userCredential = await createUserWithEmailAndPassword(firebaseAuth, formData.email, formData.password);
             await InitializeUser(userCredential.user.uid, userCredential.user.email ?? '');
+            router.replace('/userInfo')
         } catch (error) {
             console.error('Authentication/Document error:', error);
         }

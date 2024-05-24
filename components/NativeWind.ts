@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, ImageBackground, TextInput, ScrollView, Pressable } from 'react-native'
+import { View, FlatList, Text, Image, TouchableOpacity, TouchableWithoutFeedback, ImageBackground, TextInput, ScrollView, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
 import { styled } from "nativewind";
@@ -13,3 +13,4 @@ export const $TouchableOpacity = styled(TouchableOpacity);
 export const $SafeAreaView = styled(SafeAreaView);
 export const $Link = styled(Link);
 export const $Pressable = styled(Pressable);
+export const $FlatList = styled(FlatList);
