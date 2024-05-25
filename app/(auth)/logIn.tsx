@@ -1,9 +1,7 @@
 import SignInForm from '@/components/auth/SignInForm'
 import { images } from '@/constants'
-//---------------------------------------------------------------------------------------------------------
 import { signInWithEmailAndPassword, AuthError } from 'firebase/auth'
 import { firebaseAuth } from '@/FirebaseConfig'
-//---------------------------------------------------------------------------------------------------------
 import { Link, router } from 'expo-router'
 import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native'
 import { useState } from 'react';
@@ -14,7 +12,6 @@ const $ScrollView = styled(ScrollView);
 const $TouchableOpacity = styled(TouchableOpacity);
 const $Link = styled(Link);
 const $Image = styled(Image);
-//---------------------------------------------------------------------------------------------------------
 const signUp = () => {
     interface FormData {
         email: string;

@@ -5,7 +5,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { firebaseAuth, firebaseFirestore } from '@/FirebaseConfig'
 //---------------------------------------------------------------------------------------------------------
 import { Link, router } from 'expo-router'
-import { View, Text, ScrollView, TouchableOpacity, Image, Platform } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, Image, Platform, TextStyle } from 'react-native'
 import { useEffect, useState } from 'react';
 import { styled } from 'nativewind'
 import { $TextInput, $TouchableWithoutFeedback } from '@/components/NativeWind';
@@ -106,7 +106,7 @@ const signUp = () => {
                         >
                             <$TextInput
                                 value={formData.password}
-                                style={Platform.OS === 'web' ? { outlineStyle: 'none' } : { borderColor: '#000' }}
+                                style={Platform.OS === 'web' ? { outlineStyle: 'none' } as TextStyle : { borderColor: '#000' }}
                                 className='border-transparent p-2 text-black flex-1 placeholder:text-black'
                                 placeholder='Password'
                                 secureTextEntry={!showPassword}
@@ -132,12 +132,12 @@ const signUp = () => {
                         >
                             <$TextInput
                                 value={formData.retypePassword}
-                                style={Platform.OS === 'web' ? { outlineStyle: 'none' } : { borderColor: '#000' }}
+                                style={Platform.OS === 'web' ? { outlineStyle: 'none' } as TextStyle : { borderColor: '#000' } as TextStyle}
                                 className='border-transparent p-2 text-black flex-1'
                                 placeholder='Password'
                                 placeholderTextColor={'black'}
                                 secureTextEntry={!showPassword}
-                                onChangeText={(retypePassword) => setFormData({ ...formData, retypePassword })}
+                                onChangeText={(retypePassword: string) => setFormData({ ...formData, retypePassword })}
                             />
                             <$TouchableWithoutFeedback
                                 onPress={handleShowBtn}

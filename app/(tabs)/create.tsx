@@ -1,4 +1,4 @@
-import { Platform } from 'react-native'
+import { Platform, TextStyle } from 'react-native'
 import { icons } from '@/constants';
 import React, { useState } from 'react'
 import GetPhoto from '@/components/create/GetPhoto'
@@ -105,10 +105,9 @@ const create = () => {
                         placeholderTextColor={'white'}
                         multiline
                         numberOfLines={Platform.OS === 'web' ? 20 : 1}
-                        showsVerticalScrollIndicator={false}
                         allowFontScaling
                         collapsable
-                        style={[Platform.OS === 'web' ? { outlineStyle: 'none' } : { borderColor: '#000' }, { scrollbarWidth: 'none' }]}
+                        style={[Platform.OS === 'web' ? { outlineStyle: 'none' } as TextStyle : { borderColor: '#000' }, { scrollbarWidth: 'none' } as TextStyle]}
                         value={caption}
                         onChangeText={(caption) => { setCaption(caption) }}
                     />

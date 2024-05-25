@@ -1,4 +1,4 @@
-import { View, Text, Platform } from 'react-native'
+import { View, Text, Platform, TextStyle } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { $Text, $TextInput, $TouchableOpacity, $View } from '../NativeWind'
 import { useUserData } from '@/context/UserDataProvider'
@@ -42,7 +42,7 @@ const GetUserInfo = () => {
                     className='w-full h-10 flex-row border-[2px] rounded-lg border-primary bg-primary'
                 >
                     <$TextInput
-                        style={Platform.OS === 'web' ? { outlineStyle: 'none' } : { borderColor: '#000' }}
+                        style={Platform.OS === 'web' ? { outlineStyle: 'none' } as TextStyle : { borderColor: '#000' }}
                         value={name}
                         className={`border-0 text-black min-h-[30px] h-full flex-1 bg-white placeholder:text-black rounded-md`}
                         placeholder={userData?.name || 'name'}
@@ -68,7 +68,7 @@ const GetUserInfo = () => {
                     className='w-full border-[2px] rounded-lg border-primary bg-primary'
                 >
                     <$TextInput
-                        style={Platform.OS === 'web' ? { outlineStyle: 'none' } : { borderColor: '#000' }}
+                        style={Platform.OS === 'web' ? { outlineStyle: 'none' } as TextStyle : { borderColor: '#000' }}
                         value={bio}
                         multiline
                         numberOfLines={Platform.OS === 'web' ? 3 : 1}

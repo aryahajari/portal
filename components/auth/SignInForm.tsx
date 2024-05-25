@@ -1,4 +1,4 @@
-import { Platform } from 'react-native'
+import { Platform, TextStyle } from 'react-native'
 import { icons } from '../../constants'
 import React from 'react'
 import { $Image, $Text, $TextInput, $TouchableWithoutFeedback, $View } from '../NativeWind';
@@ -55,7 +55,7 @@ const SignInForm = ({ email, password, handleEmailChange, handlePasswordChange, 
             <$View className='flex-row  border-2 border-gray-400 rounded-md w-full bg-slate-200'>
                 <$TextInput
                     value={password}
-                    style={Platform.OS === 'web' ? { outlineStyle: 'none' } : { borderColor: '#000' }}
+                    style={Platform.OS === 'web' ? { outlineStyle: 'none' } as TextStyle : { borderColor: '#000' }}
                     className='border-transparent p-2 text-black flex-1'
                     placeholder='Password'
                     secureTextEntry={!showPassword}

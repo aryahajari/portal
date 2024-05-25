@@ -1,12 +1,10 @@
 import { ImageSourcePropType, ColorValue } from 'react-native'
 
 import React from 'react'
-import { Stack, Tabs, router } from 'expo-router'
+import { Tabs } from 'expo-router'
 import { icons } from '../../constants'
-import { SelfFeedContextProvider } from '@/context/SelfFeedProvider'
 import { StatusBar } from 'expo-status-bar';
 import { $Image, $SafeAreaView, $View } from '@/components/NativeWind'
-import { UserData, useUserData } from '@/context/UserDataProvider'
 
 
 interface TabIconInSchema {
@@ -35,7 +33,7 @@ const TabIcon = ({ icon, color, name, focused }: TabIconInSchema) => {
 }
 const TabsLayout = () => {
     return (
-        <SelfFeedContextProvider>
+        <>
             <StatusBar style='light' />
             <$SafeAreaView className='bg-dark flex-1 p-0 m-0 border-0'>
                 <Tabs
@@ -133,8 +131,7 @@ const TabsLayout = () => {
                     />
                 </Tabs>
             </$SafeAreaView>
-        </SelfFeedContextProvider>
-
+        </>
     )
 }
 
