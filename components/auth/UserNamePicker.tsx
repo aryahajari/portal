@@ -1,9 +1,8 @@
 import { Platform } from 'react-native';
-
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useUserData } from '@/context/UserDataProvider';
 import { firebaseAuth } from '@/FirebaseConfig';
-import { $Text, $TextInput, $TouchableOpacity, $View } from './NativeWind';
+import { $Text, $TextInput, $TouchableOpacity, $View } from '../NativeWind';
 
 const UserNamePicker = () => {
     const userData = useUserData();

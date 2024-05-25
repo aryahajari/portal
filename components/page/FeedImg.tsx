@@ -1,6 +1,4 @@
-import { View, Text, NativeSyntheticEvent, ImageLoadEventData } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { $View, $ImageBackground, $Text, $Image } from './NativeWind'
+import { $View } from '../NativeWind'
 import { styled } from 'nativewind'
 import { Image } from 'expo-image'
 const EImage = styled(Image)

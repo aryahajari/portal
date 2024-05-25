@@ -4,7 +4,7 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useUserData } from '@/context/UserDataProvider'
 import { useEffect, useState } from 'react';
 import { doc, setDoc } from 'firebase/firestore';
-import { $Image, $Text, $TouchableOpacity, $View } from './NativeWind';
+import { $Image, $Text, $TouchableOpacity, $View } from '../NativeWind';
 
 const SetProfilePicture = () => {
     const [PFPurl, setPFPurl] = useState<string | null>(null);

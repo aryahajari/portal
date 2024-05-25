@@ -1,6 +1,6 @@
 import { View, Text, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { $Text, $TextInput, $TouchableOpacity, $View } from './NativeWind'
+import { $Text, $TextInput, $TouchableOpacity, $View } from '../NativeWind'
 import { useUserData } from '@/context/UserDataProvider'
 import { firebaseFirestore } from '@/FirebaseConfig'
 import { doc, setDoc } from 'firebase/firestore'

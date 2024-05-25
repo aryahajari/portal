@@ -16,16 +16,7 @@ const App = () => {
   const userData = useUserData();
   const authData = useAuthContext();
   useEffect(() => {
-    //console.log(userData)
-
-    // if ((authData.isSignedIn === null || userData === null)) {
-    //   console.log('userInfo')
-    //   return
-    // }
-    if ((authData.isSignedIn === null) || userData === null) {
-      console.log(authData.isSignedIn, userData)
-      return
-    }
+    if ((authData.isSignedIn === null) || userData === null) return
     if (authData.isSignedIn) {
       if (!(userData?.email && userData?.userName && userData?.dateOfBirth && userData?.bio && userData?.name)) {
         //logged in but missing user info

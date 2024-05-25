@@ -1,31 +1,31 @@
 import { useGlobalSearchParams } from 'expo-router';
-import { $View, $ScrollView } from '@/components/NativeWind'
-import React, { useEffect } from 'react'
-import { RefreshControl } from 'react-native'
+import { $View, $FlatList } from '@/components/NativeWind'
+import React, { useCallback, useEffect } from 'react'
+import { RefreshControl, ViewToken } from 'react-native'
 import { getUserFeedData, getUserProfileData, getUidFromUserName } from '@/FirebaseConfig'
 import { FeedSchema, UserSchema } from '@/context/schema'
-import ProfileInfo from '@/components/userPage/ProfileInfo'
-import FeedLoader from '@/components/userPage/FeedLoader'
-import HeaderBackButton from '@/components/HeaderBackButton'
+import ProfileInfo from '@/components/page/ProfileInfo'
+import FeedLoader from '@/components/page/SingleFeed'
 const userProfile = () => {
     const [refreshing, setRefreshing] = React.useState(false);
-    const [feed, setFeed] = React.useState<FeedSchema[] | null>(null)
+    const [feeds, setFeeds] = React.useState<FeedSchema[] | null>(null)
     const [uid, setUid] = React.useState<string | null>(null)
     const [userData, setUserData] = React.useState<UserSchema | null>(null)
     const { userName } = useGlobalSearchParams()
     function refresh() {
         setRefreshing(true);
+        setFeeds([])
         if (!uid) return;
-        fetchUserFeedData(uid).then(() => { setRefreshing(false); })
+        fetchUserPostData(uid).then(() => { setRefreshing(false); })
     }
     const fetchUID = async (uid: string) => {
         const data = await getUidFromUserName(uid);
         setUid(data);
     };
-    const fetchUserFeedData = async (uid: string) => {
+    const fetchUserPostData = async (uid: string) => {
         const feedData = await getUserFeedData(uid);
         const userProfileData = await getUserProfileData(uid);
-        setFeed(feedData);
+        setFeeds(feedData);
         setUserData(userProfileData);
     };
     useEffect(() => {
@@ -34,35 +34,38 @@ const userProfile = () => {
     }, [userName]);
 
     useEffect(() => {
-        console.log('uid', uid);
         if (!uid) return;
-        fetchUserFeedData(uid);
+        fetchUserPostData(uid);
     }, [uid]);
-
-    if (!userData) return null
-
+    //--------------------Viewability Config--------------------
+    type prps = {
+        viewableItems: ViewToken<unknown>[];
+        changed: ViewToken<unknown>[];
+    }
+    const [viewableItems, setViewableItems] = React.useState<string[]>([])
+    const [visibilityThreshold, setVisibilityThreshold] = React.useState(90);
+    const onViewableItemsChanged = useCallback((props: prps) => {
+        setViewableItems(props.changed.map((item) => item.key as string))
+    }, [visibilityThreshold]);
     return (
         <$View className='flex-1 bg-dark'>
-
-            <$View className='w-full lg:w-1/2 lg:mr-auto lg:ml-auto'>
-                <HeaderBackButton href='search' />
-            </$View>
-            <$ScrollView className='w-full self-center'
-                showsVerticalScrollIndicator={false}
+            <$FlatList
+                ListHeaderComponent={<ProfileInfo
+                    userData={userData}
+                    feed={feeds?.length || 0}
+                />}
+                data={feeds}
+                renderItem={({ item }) => <FeedLoader feed={item as FeedSchema} visibleItems={viewableItems} />}
+                viewabilityConfig={{ itemVisiblePercentThreshold: visibilityThreshold }}
+                keyExtractor={(item) => (item as FeedSchema).feedId}
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={refresh} />
                 }
-            >
+                onViewableItemsChanged={onViewableItemsChanged}
 
-                <ProfileInfo
-                    userData={userData}
-                    feed={feed?.length || 0}
-                />
-                {feed && <FeedLoader feeds={feed} />}
-            </$ScrollView>
+            />
         </$View>
-    );
-
+    )
 }
 
 export default userProfile

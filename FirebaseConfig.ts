@@ -63,6 +63,7 @@ export async function getFollowingFeedData(followingList: string[], lastFeedSeen
     return ret;
 
 }
+
 export async function getUserFeedData(uid: string): Promise<FeedSchema[]> {
     const feedQuery = query(
         collection(firebaseFirestore, "feeds"),

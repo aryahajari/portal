@@ -7,7 +7,7 @@ import { Platform } from "react-native";
 import { doc, setDoc, DocumentReference } from "firebase/firestore";
 import { firebaseFirestore } from '@/FirebaseConfig';
 import { useUserData } from '@/context/UserDataProvider'
-import { $Pressable, $Text, $View } from "./NativeWind";
+import { $Pressable, $Text, $View } from "../NativeWind";
 //------------------------------------------------------------------------------------------
 const DateBirthPicker = () => {
   const userData = useUserData();

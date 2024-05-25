@@ -21,14 +21,12 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
             //signOut(firebaseAuth);
             if (usr) {
                 //signOut(firebaseAuth);
-                console.log(usr.uid);
                 setUser(usr.uid);
                 setIsSignedIn(true);
                 if (Platform.OS === 'web') {
                     router.replace('/home')
                 }
             } else {
-                console.log('not signed in');
                 setUser(null);
                 setIsSignedIn(false);
                 if (Platform.OS === 'web') {

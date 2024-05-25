@@ -1,15 +1,14 @@
-import { styled } from 'nativewind'
 import { Platform } from 'react-native'
 import { icons } from '@/constants';
 import React, { useState } from 'react'
-import GetPhoto from '@/components/GetPhoto'
-import ShowPFP from '@/components/ShowPFP';
+import GetPhoto from '@/components/create/GetPhoto'
+import ShowPFP from '@/components/page/ShowPFP';
 import { useUserData } from '@/context/UserDataProvider';
 import { useRouter } from 'expo-router'
-import KeyboardCloser from '@/components/KeyboardCloser';
+import KeyboardCloser from '@/components/create/KeyboardCloser';
 import { $Image, $ScrollView, $Text, $TextInput, $TouchableOpacity, $View } from '@/components/NativeWind';
 //------------------------------------------------------------------------------------------------------------
-import { ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
+import { ref, uploadBytesResumable } from 'firebase/storage'
 import { serverTimestamp, collection, doc, runTransaction } from 'firebase/firestore';
 import { firebaseFirestore } from '@/FirebaseConfig';
 import { firebaseStorage } from '@/FirebaseConfig';
@@ -96,7 +95,9 @@ const create = () => {
                     showsVerticalScrollIndicator={false}
                 //contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
                 >
-                    <$Text className='text-secondary-100 text-base pl-2'>{userData?.userName}</$Text>
+                    <$Text className='text-white text-base pl-2'>{userData?.name}</$Text>
+                    <$Text className='text-secondary-100 text-xs pl-2'>@{userData?.userName}</$Text>
+
                     <$TextInput
                         returnKeyType="default"
                         placeholder='Caption ....'

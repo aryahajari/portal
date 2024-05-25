@@ -5,7 +5,7 @@ import { setDoc, doc } from 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import { useUserData } from '@/context/UserDataProvider'
-import { $Image, $Text, $TouchableOpacity, $View } from './NativeWind';
+import { $Image, $Text, $TouchableOpacity, $View } from '../NativeWind';
 const copyDocumentToLocalUri = async (contentUri: string) => {
     try {
         const fileInfo = await FileSystem.getInfoAsync(contentUri);

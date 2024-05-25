@@ -1,9 +1,9 @@
-import UserNamePicker from '@/components/UserNamePicker'
-import DateBirthPicker from '@/components/DateBirthPicker'
-import SetProfilePicture from '@/components/setPFP-Web'
-import SetPFP from '@/components/SetPFP-phone'
-import GetUserInfo from '@/components/GetUserInfo';
-import SignOutBtn from '@/components/SignOutBtn'
+import UserNamePicker from '@/components/auth/UserNamePicker'
+import DateBirthPicker from '@/components/auth/DateBirthPicker'
+import SetProfilePicture from '@/components/auth/setPFP-Web'
+import SetPFP from '@/components/auth/SetPFP-phone'
+import GetUserInfo from '@/components/auth/GetUserInfo';
+import SignOutBtn from '@/components/auth/SignOutBtn'
 import { Platform } from 'react-native'
 
 //---------------------------------------------------------------------------------------------------------

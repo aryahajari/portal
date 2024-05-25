@@ -1,13 +1,12 @@
 import React from 'react'
 import { $Text, $View, $TouchableOpacity } from '../NativeWind'
-import ShowPFP from '../ShowPFP'
+import ShowPFP from './ShowPFP'
 import { UserSchema } from '@/context/schema'
 import { useUserData } from '@/context/UserDataProvider'
 import FollowBtn from './FollowBtn'
 import { getFollowerNumber } from '@/FirebaseConfig'
-const profileInfo = (props: { userData: UserSchema, feed: number }) => {
-  const self = useUserData()
-  if (!self) return null
+const profileInfo = (props: { userData: UserSchema | null, feed: number }) => {
+  if (!props.userData) return null
   const [followerNumber, setFollowerNumber] = React.useState(0)
   getFollowerNumber(props.userData.uid).then((q) => {
     setFollowerNumber(q.count)

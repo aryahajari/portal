@@ -1,4 +1,4 @@
-import SignInForm from '@/components/SignInForm'
+import SignInForm from '@/components/auth/SignInForm'
 import { images } from '@/constants'
 //---------------------------------------------------------------------------------------------------------
 import { signInWithEmailAndPassword, AuthError } from 'firebase/auth'
@@ -33,7 +33,6 @@ const signUp = () => {
     }
     //----------------------------------------------------------------------------------------------------
     const handleSignIn = async () => {
-        console.log(formData.email, formData.password)
         await signInWithEmailAndPassword(firebaseAuth, formData.email, formData.password)
             .then(() => {
                 console.log('signed in')

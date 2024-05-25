@@ -1,7 +1,7 @@
 import { firebaseStorage } from '@/FirebaseConfig';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useState } from 'react';
-import { $Image, $View } from './NativeWind';
+import { $Image, $View } from '../NativeWind';
 import { Image } from 'expo-image';
 import { styled } from 'nativewind'
 const EImage = styled(Image)
@@ -16,7 +16,7 @@ const ShowPFP = (props: { URL: string | undefined, size: string }) => {
     return (
         <$View className='items-center justify-center'>
             <EImage
-                className={`lg:w-16 lg:h-16 rounded-full bg-primary-100 border-solid ${props.size}`}
+                className={`lg:w-16 lg:h-16 rounded-full ${PFPurl ? 'bg-transparent' : 'bg-primary-100'}  ${props.size}`}
                 source={PFPurl ? { uri: PFPurl } : require('@/assets/images/profile.png')}
                 contentFit='cover'
             //resizeMode='cover'

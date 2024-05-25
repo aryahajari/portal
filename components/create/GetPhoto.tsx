@@ -31,7 +31,7 @@ const uriToBlob = async (uri: string) => {
 //---------------------------------------------------------------------------------------------------------
 import { getDocumentAsync } from 'expo-document-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
-import { $Image, $TouchableOpacity } from './NativeWind';
+import { $Image, $TouchableOpacity } from '../NativeWind';
 interface imgSchema {
     file: Blob
     url: string
