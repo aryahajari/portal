@@ -7,10 +7,11 @@ import FeedImg from './FeedImg'
 import FeedVideo from './feedVideo'
 import Bookmark from './BookmarkBtn'
 import Like from './Like'
+import CommentBtn from './commentBtn'
 const FeedLoader = ({ feed, visibleItems }: { feed: FeedSchema, visibleItems: string[] }) => {
     return (
         <>
-            <$View className='w-full flex-row lg:w-1/2 self-center border-t-[1px] border-b-[1px] border-orange-50 pt-2 pb-2' key={feed.feedId}>
+            <$View className='w-full flex-row lg:w-1/2 self-center  pt-2 pb-2  border-b-[1px] border-neutral-400' key={feed.feedId}>
                 <$View className=' p-1'>
                     <ShowPFP size={Platform.OS == 'web' ? 'h-16 w-16' : 'h-14 w-14'} URL={feed.pfp} />
                 </$View>
@@ -34,11 +35,14 @@ const FeedLoader = ({ feed, visibleItems }: { feed: FeedSchema, visibleItems: st
                         :
                         <FeedImg URL={feed.img.url} aspectRatio={feed.img.aspectRatio} />)
                     }
-                    <$View className='flex-row justify-around'>
+
+                    {/* {feed?.img && <FeedImg URL={feed.img.url} aspectRatio={feed.img.aspectRatio} />} */}
+                    <$View className='flex-row justify-between  mr-1'>
                         <Like feedId={feed.feedId} />
+                        <CommentBtn feedId={feed.feedId} />
                         <Bookmark feedId={feed.feedId} />
                     </$View>
-                    {/* {feed?.img && <FeedImg URL={feed.img.url} aspectRatio={feed.img.aspectRatio} />} */}
+
                 </$View>
             </$View>
         </>

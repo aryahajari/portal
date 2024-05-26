@@ -5,8 +5,7 @@ import { useUserData } from '@/context/UserDataProvider';
 import { FeedDbSchema, FeedSchema } from '@/context/schema';
 import { collection, doc, getDoc, getDocs, orderBy, query, Timestamp, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useState } from 'react';
-// import MapView from 'react-native-maps';
-import { RefreshControl, StyleSheet, View, ViewToken } from 'react-native';
+import { RefreshControl, ViewToken } from 'react-native';
 
 export default function bookmark() {
     const userData = useUserData();
@@ -21,7 +20,6 @@ export default function bookmark() {
         );
         const querySnapshot = await getDocs(q);
         const feedsList = querySnapshot.docs.map(doc => doc.id);
-        console.log('feedIds : ', feedsList);
         const feeds = feedsList.map(async feedId => {
             const feedRef = doc(collection(firebaseFirestore, "feeds"), feedId);
             const docSnap = await getDoc(feedRef)
@@ -31,17 +29,6 @@ export default function bookmark() {
             return { ...feed, img, feedId };
         });
         setFeeds(await Promise.all(feeds) as FeedSchema[]);
-        console.log('feeds : ', feeds);
-        // const querySnapshot = await getDocs(q);
-        // const feeds = querySnapshot.docs.map(doc => ({ ...doc.data(), feedId: doc.id }) as FeedDbSchema);
-
-        // const enhancedFeeds = feeds.map(async feed => {
-        //     if (!feed.img) return feed;
-        //     const img = await getImg(feed.img);
-        //     return { ...feed, img };
-        // });
-
-        // setFeeds(await Promise.all(enhancedFeeds) as FeedSchema[]);
     }
     useEffect(() => {
         getBookmarks();

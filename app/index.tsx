@@ -1,12 +1,10 @@
 
 import React, { useEffect } from 'react'
-import { Slot, Stack, useRouter } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { NativeWindStyleSheet } from "nativewind";
 import { useAuthContext } from '../context/AuthDataProvider';
 import { useUserData } from '../context/UserDataProvider';
-import { Redirect } from 'expo-router'
 import { $View } from '@/components/NativeWind';
-import { Platform } from 'react-native';
 NativeWindStyleSheet.setOutput({
   default: "native",
 });
@@ -16,8 +14,9 @@ const App = () => {
   const userData = useUserData();
   const authData = useAuthContext();
   useEffect(() => {
-    if ((authData.isSignedIn === null) || userData === null) return
+    if (authData.isSignedIn === null) return
     if (authData.isSignedIn) {
+      if (userData === null) return
       if (!(userData?.email && userData?.userName && userData?.dateOfBirth && userData?.bio && userData?.name)) {
         //logged in but missing user info
         router.replace('userInfo')
@@ -28,8 +27,6 @@ const App = () => {
       //not logged in
       router.replace('/logIn')
     }
-
-
   }, [userData, authData])
   return (
     <$View className='flex-1 bg-dark'></$View>

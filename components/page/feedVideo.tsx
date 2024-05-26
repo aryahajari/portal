@@ -14,7 +14,7 @@ const FeedVideo = (props: { URL: string, aspectRatio: Number, play: boolean }) =
                         rate={1.0}
                         volume={1.0}
                         shouldPlay={props.play}
-                        useNativeControls={false}
+                        useNativeControls={true}
                         resizeMode={"cover" as ResizeMode}
                         isLooping
                         isMuted={false}
