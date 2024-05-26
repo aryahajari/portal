@@ -50,7 +50,12 @@ const home = () => {
                 viewabilityConfig={{ itemVisiblePercentThreshold: visibilityThreshold }}
                 keyExtractor={(item) => (item as FeedSchema).feedId}
                 refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={refresh} />
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={refresh}
+                        tintColor="#FFF" // iOS
+                        colors={["#FFF"]} // Android 
+                    />
                 }
                 onViewableItemsChanged={onViewableItemsChanged}
 

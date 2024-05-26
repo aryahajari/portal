@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { $Image, $Text, $TouchableOpacity, $View } from './NativeWind';
+import { $Image, $Text, $TouchableOpacity, $View } from '../NativeWind';
 import { icons } from '@/constants';
-import { collection, doc, setDoc, getDoc, deleteDoc, runTransaction, increment } from 'firebase/firestore';
+import { collection, doc, setDoc, getDoc, deleteDoc, runTransaction, increment, serverTimestamp } from 'firebase/firestore';
 import { firebaseFirestore } from '@/FirebaseConfig';
 import { useUserData } from '@/context/UserDataProvider';
 import Svg, { Path } from 'react-native-svg';
@@ -38,7 +38,7 @@ const YourComponent = ({ feedId }: { feedId: string, }) => {
         if (userData === null) return;
         setDisableBtn(true);
         const bookmarkDocRef = doc(collection(firebaseFirestore, "users", userData.uid, 'bookmarks'), feedId);
-        await setDoc(bookmarkDocRef, { saved: true });
+        await setDoc(bookmarkDocRef, { savedAt: serverTimestamp(), saved: true });
         setIsBookmarked(true);
         setDisableBtn(false);
     }

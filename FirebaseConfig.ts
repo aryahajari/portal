@@ -1,8 +1,9 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, initializeFirestore, doc, getDoc, collection, where, query, orderBy, getDocs, serverTimestamp, getCountFromServer, setDoc, limit, Query } from "firebase/firestore";
+import { CACHE_SIZE_UNLIMITED, initializeFirestore, doc, getDoc, collection, where, query, orderBy, getDocs, serverTimestamp, getCountFromServer, setDoc, limit, Query } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, getMetadata } from 'firebase/storage'
 import { UserSchema, AuthContextSchema, FeedSchema, FeedDbSchema } from '@/context/schema'
 const firebaseConfig = {
+    databaseURL: 'https://portal-react-native.firebaseio.com',
     apiKey: "AIzaSyBH8mWXeQ-rPT7JvYIFG4dQ3gublhyLJ5o",
     authDomain: "portal-react-native.firebaseapp.com",
     projectId: "portal-react-native",
@@ -24,9 +25,10 @@ import { Timestamp } from "@google-cloud/firestore";
 export let firebaseAuth: Auth;
 if (Platform.OS === 'web') {
     firebaseAuth = getAuth(firebaseApp);
-    console.log('web')
 } else {
-    firebaseAuth = initializeAuth(firebaseApp, { persistence: getReactNativePersistence(ReactNativeAsyncStorage) });
+    firebaseAuth = initializeAuth(firebaseApp,
+        { persistence: getReactNativePersistence(ReactNativeAsyncStorage) }
+    );
 }
 
 export async function getUserProfileData(uid: string) {
@@ -123,6 +125,11 @@ export async function updateUserLastFeedSeen(uid: string) {
 
 }
 
-export const firebaseFirestore = getFirestore(firebaseApp);
-
+//export const firebaseFirestore = getFirestore(firebaseApp);
+export const firebaseFirestore = initializeFirestore(firebaseApp, {
+    // experimentalAutoDetectLongPolling: true,
+    //ignoreUndefinedProperties: true,
+    experimentalForceLongPolling: false,
+    cacheSizeBytes: CACHE_SIZE_UNLIMITED
+})
 export const firebaseStorage = getStorage(firebaseApp);

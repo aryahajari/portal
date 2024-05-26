@@ -5,6 +5,8 @@ import { $Link, $Text, $View } from '../NativeWind'
 import ShowPFP from './ShowPFP'
 import FeedImg from './FeedImg'
 import FeedVideo from './feedVideo'
+import Bookmark from './BookmarkBtn'
+import Like from './Like'
 const FeedLoader = ({ feed, visibleItems }: { feed: FeedSchema, visibleItems: string[] }) => {
     return (
         <>
@@ -32,7 +34,10 @@ const FeedLoader = ({ feed, visibleItems }: { feed: FeedSchema, visibleItems: st
                         :
                         <FeedImg URL={feed.img.url} aspectRatio={feed.img.aspectRatio} />)
                     }
-
+                    <$View className='flex-row justify-around'>
+                        <Like feedId={feed.feedId} />
+                        <Bookmark feedId={feed.feedId} />
+                    </$View>
                     {/* {feed?.img && <FeedImg URL={feed.img.url} aspectRatio={feed.img.aspectRatio} />} */}
                 </$View>
             </$View>
