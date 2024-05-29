@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { CACHE_SIZE_UNLIMITED, initializeFirestore, doc, getDoc, collection, where, query, orderBy, getDocs, serverTimestamp, getCountFromServer, setDoc, limit, Query, setLogLevel } from "firebase/firestore";
+import { initializeFirestore, doc, getDoc, collection, where, query, orderBy, getDocs, serverTimestamp, getCountFromServer, setDoc, limit, Timestamp, Query } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, getMetadata } from 'firebase/storage'
-import { UserSchema, AuthContextSchema, FeedSchema, FeedDbSchema } from '@/context/schema'
+import { UserSchema, FeedSchema, FeedDbSchema } from '@/context/schema'
 const firebaseConfig = {
     databaseURL: 'https://portal-react-native.firebaseio.com',
     apiKey: "AIzaSyBH8mWXeQ-rPT7JvYIFG4dQ3gublhyLJ5o",
@@ -16,11 +16,11 @@ const firebaseConfig = {
 export const firebaseApp = initializeApp(firebaseConfig);
 
 
-import { initializeAuth, getReactNativePersistence, type Auth } from 'firebase/auth';
+import { initializeAuth, type Auth } from 'firebase/auth';
+import { getReactNativePersistence } from 'firebase/auth';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from "react-native";
 import { getAuth } from 'firebase/auth/web-extension';
-import { Timestamp } from "@google-cloud/firestore";
 
 export let firebaseAuth: Auth;
 if (Platform.OS === 'web') {
@@ -30,53 +30,57 @@ if (Platform.OS === 'web') {
         { persistence: getReactNativePersistence(ReactNativeAsyncStorage) }
     );
 }
+//-------------------------------------------------------------------------------------------------
+export const firebaseFirestore = initializeFirestore(firebaseApp, {
+    experimentalForceLongPolling: true,
+    ignoreUndefinedProperties: true
+})
+export const firebaseStorage = getStorage(firebaseApp);
+
 
 export async function getUserProfileData(uid: string) {
     const docRef = doc(firebaseFirestore, "users", uid);
     const docSnap = await getDoc(docRef);
     return docSnap.data() as UserSchema;
 }
+
 export async function getFollowingFeedData(followingList: string[], lastFeedSeen: Timestamp | undefined) {
-    let feedQuery;
-    if (lastFeedSeen) {
-        feedQuery = query(
-            collection(firebaseFirestore, "feeds"),
-            where("uid", "in", followingList),
-            where("createdAt", "<", lastFeedSeen),
-            orderBy('createdAt', 'desc'),
-            limit(10)
-        );
-    } else {
-        feedQuery = query(
+    const RETREAVAL_LIMIT = 10;
+    const createFeedQuery = (lastSeen: Timestamp | undefined) => {
+        const baseQuery = query(
             collection(firebaseFirestore, "feeds"),
             where("uid", "in", followingList),
             orderBy('createdAt', 'desc'),
-            limit(10)
+            limit(RETREAVAL_LIMIT)
         );
-    }
-    try {
+        if (!lastSeen) { console.log('fetch from base') } else { console.log('fetch from last seen') }
+        return lastSeen ? query(baseQuery, where("createdAt", "<", lastSeen)) : baseQuery;
+    };
+
+    const fetchFeeds = async (feedQuery: Query) => {
         const querySnapshot = await getDocs(feedQuery);
-        const feeds = querySnapshot.docs.map(doc => ({ ...doc.data(), feedId: doc.id }) as FeedDbSchema);
-        const enhancedFeeds = feeds.map(async feed => {
+        const feedsSnapshot = querySnapshot.docs.map(doc => ({ ...doc.data(), feedId: doc.id }) as FeedDbSchema);
+        const lastFeed = feedsSnapshot[feedsSnapshot.length - 1];
+        const feeds = await Promise.all(feedsSnapshot.map(async feed => {
             if (!feed.img) return feed;
-            try {
-                const img = await getImg(feed.img);
-                return { ...feed, img };
-            } catch (imgError) {
-                console.log('errrrrrr')
-                console.error('Error fetching image:', imgError);
-                // Optionally handle the error e.g., by setting a default image or logging the error
-                return { ...feed, img: 'default-image-path-or-data' };
-            }
-        });
-        const ret = await Promise.all(enhancedFeeds) as FeedSchema[];
-        return ret;
-    } catch (error) {
-        console.log('errrrrrr2')
-        console.error('Failed to fetch feeds:', error);
-        // Handle the error appropriately
-        // You might want to throw the error or return a default value
-        throw new Error('Unable to fetch feed data');
+            const img = await getImg(feed.img);
+            return { ...feed, img } as FeedSchema;
+        }));
+
+        return { feeds, lastFeed, isLastBatch: feedsSnapshot.length < RETREAVAL_LIMIT };
+    };
+    let retries = 3;
+
+    while (retries > 0) {
+        try {
+            const feedQuery = createFeedQuery(lastFeedSeen);
+            return await fetchFeeds(feedQuery);
+        } catch (error) {
+            console.error('Error fetching feed data:', error);
+            if (retries === 1) throw new Error('Unable to fetch feed data after multiple attempts');
+            retries--;
+            await new Promise(res => setTimeout(res, 1000 * (3 - retries))); // Exponential backoff
+        }
     }
 }
 
@@ -139,13 +143,3 @@ export async function updateUserLastFeedSeen(uid: string) {
 
 }
 
-//export const firebaseFirestore = getFirestore(firebaseApp);
-export const firebaseFirestore = initializeFirestore(firebaseApp, {
-    // experimentalAutoDetectLongPolling: true,
-    //ignoreUndefinedProperties: true,
-    experimentalLongPollingOptions: { timeoutSeconds: 30 },
-    experimentalForceLongPolling: true,
-    cacheSizeBytes: CACHE_SIZE_UNLIMITED
-})
-export const firebaseStorage = getStorage(firebaseApp);
-setLogLevel('debug');

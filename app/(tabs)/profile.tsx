@@ -46,7 +46,9 @@ const profile = () => {
         const feedData = await getUserFeedData(uid);
         setFeeds(feedData);
     };
-
+    const fetchmore = async () => {
+        console.log('fetching more')
+    }
     useEffect(() => {
         if (!self) return;
         fetchUserFeedData(self.uid);
@@ -80,7 +82,7 @@ const profile = () => {
                     <RefreshControl refreshing={refreshing} onRefresh={refresh} />
                 }
                 onViewableItemsChanged={onViewableItemsChanged}
-
+                onEndReached={fetchmore}
             />
         </$View>
     );

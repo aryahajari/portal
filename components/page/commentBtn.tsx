@@ -3,21 +3,59 @@ import { collection, doc, runTransaction, increment, getDocs, query, orderBy, li
 import { firebaseFirestore } from '@/FirebaseConfig';
 import { useUserData } from '@/context/UserDataProvider';
 import Svg, { Path } from 'react-native-svg';
-import { Alert, StyleSheet, TextInput } from 'react-native';
-import { useEffect, useState } from 'react';
+import { RefreshControl, PanResponder, Dimensions, Platform, } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
 import { icons } from '@/constants';
 import ShowPFP from './ShowPFP';
+
 const commentBtn = ({ feedId }: { feedId: string, }) => {
+    const [refreshing, setRefreshing] = useState(false);
     const [showModal, setshowModal] = useState<boolean>(false);
     const [disableBtn, setDisableBtn] = useState<boolean>(false);
     const [txtInput, setTxtInput] = useState<string>('');
     const [comments, setComments] = useState<commentSchema[]>([]);
     const userData = useUserData();
+    const [boxHeight, setBoxHeight] = useState(500);
+
+    const panResponder = useRef(
+        PanResponder.create({
+            onStartShouldSetPanResponder: () => true,
+            onPanResponderGrant: () => {
+            },
+            onPanResponderMove: (evt, gestureState) => {
+                setBoxHeight(() => {
+                    const windowHeight = Dimensions.get('window').height
+                    const px = (windowHeight - gestureState.moveY)
+                    const percentage = Math.round(px / windowHeight * 100)
+                    const topPosition = Platform.OS === 'ios' ? (95 / 100 * windowHeight) : windowHeight
+                    const bottomPosition = windowHeight * 0.55
+                    if (percentage > (Platform.OS === 'ios' ? 95 : 100)) return topPosition
+                    if (percentage < 55) return bottomPosition
+                    return px
+                });
+            },
+            onPanResponderRelease: (evt, gestureState) => {
+                const windowHeight = Dimensions.get('window').height
+                const px = (windowHeight - gestureState.moveY)
+                const topPosition = Platform.OS === 'ios' ? (95 / 100 * windowHeight) : windowHeight
+                const bottomPosition = windowHeight * 0.55
+                if (gestureState.vy > 1.6) setBoxHeight(bottomPosition)
+                if (gestureState.vy < -1.6) setBoxHeight(topPosition)
+            }
+        })
+    ).current;
+
+
     async function getComments() {
         const commentsCollection = collection(firebaseFirestore, "feeds", feedId, 'comments')
         const q = query(commentsCollection, orderBy('createdAt', 'desc'), limit(10));
         const querySnapshot = await getDocs(q);
         setComments(querySnapshot.docs.map(doc => doc.data() as commentSchema));
+    }
+    async function refresh() {
+        setRefreshing(true);
+        await getComments();
+        setRefreshing(false);
     }
     interface commentSchema {
         createdAt: Timestamp
@@ -80,13 +118,22 @@ const commentBtn = ({ feedId }: { feedId: string, }) => {
                 onRequestClose={() => {
                     setshowModal(!showModal);
                 }}>
+
                 <$View className='flex-1 justify-end'>
-                    <$View className='bg-dark w-full h-4/5 border-t-2 border-r-2 border-l-2  border-white rounded-2xl' >
-                        <$TouchableOpacity
-                            className='bg-white rounded-full justify-center items-center mt-2 mr-3 h-8 w-8 self-end'
-                            onPress={() => setshowModal(!showModal)}>
-                            <$Text className='text-xl' >X</$Text>
-                        </$TouchableOpacity>
+                    <$View
+                        className='bg-dark w-full  border-t-[6px] border-r-2 border-l-2  border-white rounded-3xl'
+                        style={{ height: boxHeight, cursor: 'pointer' }}
+                    >
+                        <$View
+                            {...panResponder.panHandlers}
+                            className=' w-full  rounded-full'
+                        >
+                            <$TouchableOpacity
+                                className='bg-white rounded-full justify-center items-center mt-2 mr-3 h-8 w-8 self-end'
+                                onPress={() => setshowModal(!showModal)}>
+                                <$Text className='text-xl' >X</$Text>
+                            </$TouchableOpacity>
+                        </$View>
                         <$View className='flex-row  bg-dark w-full border-b-[1px] border-neutral-400 pb-2 justify-between items-center'>
                             <$View className='flex-row items-center w-9/12 ml-1'>
                                 <ShowPFP size='h-14 w-14' URL={userData?.pfp} />
@@ -115,6 +162,13 @@ const commentBtn = ({ feedId }: { feedId: string, }) => {
                             </$TouchableOpacity>
                         </$View>
                         <$FlatList
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={refreshing}
+                                    onRefresh={refresh}
+                                    tintColor="#FFF" // iOS
+                                />
+                            }
                             data={comments}
                             keyExtractor={(item, index) => index.toString()}
                             renderItem={({ item }) => (

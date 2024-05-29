@@ -1,37 +1,76 @@
 import { $View, $FlatList } from '@/components/NativeWind'
 import React, { useCallback, useEffect } from 'react'
-import { getFollowingFeedData, updateUserLastFeedSeen } from '@/FirebaseConfig'
-import { FeedSchema } from '@/context/schema'
+import { firebaseFirestore, getFollowingFeedData, getImg, updateUserLastFeedSeen } from '@/FirebaseConfig'
+import { FeedSchema, FeedDbSchema } from '@/context/schema'
 import { useUserData } from '@/context/UserDataProvider';
 import FeedLoader from '@/components/page/SingleFeed'
-import { RefreshControl, ViewToken } from 'react-native';
+import { ActivityIndicator, RefreshControl, ViewToken } from 'react-native';
+import { collection, getDocs, limit, orderBy, query, startAfter, where } from 'firebase/firestore';
+
 const home = () => {
     const userData = useUserData();
     const following = userData?.following
     const uid = userData?.uid
     const lastFeedSeen = userData?.lastFeedSeen
     const [refreshing, setRefreshing] = React.useState(false);
-    const [feeds, setFeeds] = React.useState<FeedSchema[]>([]);
-    function refresh() {
-        if (!(uid && following)) return
-        setRefreshing(true);
-        setFeeds([])
-        updateUserLastFeedSeen(uid).then(() => {
-            getFollowingFeedData(following, lastFeedSeen)
-                .then((data) => {
-                    setFeeds(data)
-                    setRefreshing(false);
-                })
-        })
-    }
+    const [feeds, setFeeds] = React.useState<(FeedDbSchema | FeedSchema)[]>([]);
+    const [lastFeed, setLastFeed] = React.useState<FeedDbSchema | undefined>(undefined);
+    const [isLastBatch, setIsLastBatch] = React.useState(false);
     useEffect(() => {
         if (!(following)) return
         getFollowingFeedData(following, lastFeedSeen)
             .then((data) => {
+                if (!data) return
                 setRefreshing(false);
-                setFeeds(data)
+                setLastFeed(data.lastFeed)
+                setFeeds(data.feeds)
+                setIsLastBatch(data.isLastBatch)
             })
     }, [userData])
+    function refresh() {
+        if (!(uid && following)) return
+        setRefreshing(true);
+        updateUserLastFeedSeen(uid).then(() => {
+            getFollowingFeedData(following, undefined)
+                .then((data) => {
+                    if (!data) return
+                    setLastFeed(data.lastFeed)
+                    setFeeds(data.feeds)
+                    setIsLastBatch(data.isLastBatch)
+                    setRefreshing(false);
+                }).catch((error) => {
+                    console.error('Error in fetching feeds', error);
+                    setRefreshing(false);
+                })
+        })
+    }
+    const fetchmore = async () => {
+        const RETREAVAL_LIMIT = 5;
+        if (!lastFeed) return
+        try {
+            const q = query(
+                collection(firebaseFirestore, "feeds"),
+                where("uid", "in", following),
+                where("createdAt", "<", lastFeed.createdAt),
+                orderBy('createdAt', 'desc'),
+                startAfter(lastFeed.createdAt),
+                limit(RETREAVAL_LIMIT),
+            );
+            const querySnapshot = await getDocs(q);
+            const newFeeds = querySnapshot.docs.map(doc => ({ ...doc.data(), feedId: doc.id }) as FeedDbSchema);
+            setLastFeed(newFeeds[newFeeds.length - 1]);
+            const enhancedFeeds = newFeeds.map(async feed => {
+                if (!feed.img) return feed;
+                const img = await getImg(feed.img);
+                return { ...feed, img } as FeedSchema;
+            });
+            const resolvedNewFeeds = await Promise.all(enhancedFeeds);
+            setIsLastBatch(newFeeds.length < RETREAVAL_LIMIT);
+            setFeeds([...feeds, ...resolvedNewFeeds]);
+        } catch (error) {
+            throw new Error('Unable to fetch feed data');
+        }
+    }
     //--------------------Viewability Config--------------------
     type prps = {
         viewableItems: ViewToken<unknown>[];
@@ -54,15 +93,24 @@ const home = () => {
                         refreshing={refreshing}
                         onRefresh={refresh}
                         tintColor="#FFF" // iOS
-                        colors={["#FFF"]} // Android 
                     />
                 }
+                ListFooterComponent={footer}
+                ListFooterComponentStyle={{ display: isLastBatch ? 'none' : 'flex' }}
                 onViewableItemsChanged={onViewableItemsChanged}
+                onEndReached={fetchmore}
+                onEndReachedThreshold={0.5}
 
             />
         </$View>
     );
 
 }
-
+const footer = () => {
+    return (
+        <$View className='flex-1 pt-5 mt-2  justify-center items-center'>
+            <ActivityIndicator size="large" color={'#FFF'} />
+        </$View>
+    )
+}
 export default home
