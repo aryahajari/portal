@@ -6,6 +6,7 @@ import { getUserFeedData, getUserProfileData, getUidFromUserName } from '@/Fireb
 import { FeedSchema, UserSchema } from '@/context/schema'
 import ProfileInfo from '@/components/page/ProfileInfo'
 import FeedLoader from '@/components/page/SingleFeed'
+import HeaderBackButton from '@/components/HeaderBackButton';
 const userProfile = () => {
     const [refreshing, setRefreshing] = React.useState(false);
     const [feeds, setFeeds] = React.useState<FeedSchema[] | null>(null)
@@ -49,6 +50,7 @@ const userProfile = () => {
     }, [visibilityThreshold]);
     return (
         <$View className='flex-1 bg-dark'>
+            <HeaderBackButton />
             <$FlatList
                 ListHeaderComponent={<ProfileInfo
                     userData={userData}

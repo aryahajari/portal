@@ -27,9 +27,13 @@ const home = () => {
                 setIsLastBatch(data.isLastBatch)
             })
     }, [userData])
+    // useEffect(() => {
+    //     console.log(feeds.map((feed, index) => index + '\t' + feed.caption.slice(0, 10) + '\t' + feed.img + '\t' + feed.feedId + "\n"))
+    // }, [feeds])
     function refresh() {
         if (!(uid && following)) return
         setRefreshing(true);
+        //setFeeds([])
         updateUserLastFeedSeen(uid).then(() => {
             getFollowingFeedData(following, undefined)
                 .then((data) => {
@@ -61,8 +65,12 @@ const home = () => {
             setLastFeed(newFeeds[newFeeds.length - 1]);
             const enhancedFeeds = newFeeds.map(async feed => {
                 if (!feed.img) return feed;
-                const img = await getImg(feed.img);
-                return { ...feed, img } as FeedSchema;
+                try {
+                    const img = await getImg(feed.img);
+                    return { ...feed, img } as FeedSchema;
+                } catch (e) {
+                    return { ...feed, img: undefined } as FeedDbSchema;
+                }
             });
             const resolvedNewFeeds = await Promise.all(enhancedFeeds);
             setIsLastBatch(newFeeds.length < RETREAVAL_LIMIT);
@@ -96,7 +104,7 @@ const home = () => {
                     />
                 }
                 ListFooterComponent={footer}
-                ListFooterComponentStyle={{ display: isLastBatch ? 'none' : 'flex' }}
+                ListFooterComponentStyle={{ display: isLastBatch || !userData?.following ? 'none' : 'flex' }}
                 onViewableItemsChanged={onViewableItemsChanged}
                 onEndReached={fetchmore}
                 onEndReachedThreshold={0.5}

@@ -32,6 +32,7 @@ const uriToBlob = async (uri: string) => {
 import { getDocumentAsync } from 'expo-document-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { $Image, $TouchableOpacity } from '../NativeWind';
+import { PictureIcon } from '@/constants/SVG';
 interface imgSchema {
     file: Blob
     url: string
@@ -77,10 +78,7 @@ const GetPhoto = (props: { img: imgSchema | null, setImg: React.Dispatch<React.S
             onPress={Platform.OS === 'web' ? pickImgWeb : pickImgPhone}
             className='bg-transparent text-white justify-end items-end self-end'
         >
-            <$Image
-                source={icons.picture}
-                className={'w-8 h-7'}
-            />
+            <PictureIcon height={33} width={33} />
         </$TouchableOpacity>
     )
 }

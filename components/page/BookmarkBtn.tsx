@@ -42,9 +42,9 @@ const YourComponent = ({ feedId }: { feedId: string, }) => {
         setIsBookmarked(true);
         setDisableBtn(false);
     }
-    const Like = () => {
+    const BookmarkBtn = () => {
         return (
-            <Svg height="24px" viewBox="0 0 24 24" width="24px" fill={`${isBookmarked ? '#1fbf3a' : '#FFF'}`}>
+            <Svg height="30px" viewBox="0 0 24 24" width="30px" fill={`${isBookmarked ? '#1fbf3a' : '#FFF'}`}>
                 <Path d="M0 0h24v24H0z" fill="none" />
                 <Path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z" />
             </Svg>
@@ -57,7 +57,7 @@ const YourComponent = ({ feedId }: { feedId: string, }) => {
                 disabled={disableBtn}
                 onPress={isBookmarked ? unSaveFeed : saveFeed}
             >
-                <Like />
+                <BookmarkBtn />
             </$TouchableOpacity>
         </$View>);
 };

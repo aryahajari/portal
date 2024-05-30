@@ -12,6 +12,7 @@ import { ref, uploadBytesResumable } from 'firebase/storage'
 import { serverTimestamp, collection, doc, runTransaction } from 'firebase/firestore';
 import { firebaseFirestore } from '@/FirebaseConfig';
 import { firebaseStorage } from '@/FirebaseConfig';
+import { BackIcon, SendIcon } from '@/constants/SVG';
 const create = () => {
     const router = useRouter();
     const userData = useUserData();
@@ -63,10 +64,7 @@ const create = () => {
                     <$TouchableOpacity
                         onPress={() => { router.back() }}
                     >
-                        <$Image
-                            source={icons.leftArrow}
-                            className={tabSize}
-                        />
+                        <BackIcon height={33} width={33} />
                     </$TouchableOpacity>
                 </$View>
                 <$View className='flex-row gap-4'>
@@ -78,12 +76,8 @@ const create = () => {
                     <$TouchableOpacity
                         onPress={handleSubmit}
                     >
-                        <$Image
-                            source={icons.send}
-                            className={tabSize}
-                        />
+                        <SendIcon height={33} width={33} />
                     </$TouchableOpacity>
-
                 </$View>
             </$View>
             <$View className='w-full h-full flex-row lg:w-1/2'>

@@ -2,6 +2,7 @@ import { $Image, $TouchableOpacity } from '@/components/NativeWind'
 import { Keyboard } from 'react-native';
 import React, { useEffect, useState } from 'react'
 import { icons } from '@/constants';
+import { HideKeyborad } from '@/constants/SVG';
 
 const KeyboardCloser = () => {
     const [keyboardUse, setKeyboardUse] = useState(false);
@@ -29,10 +30,7 @@ const KeyboardCloser = () => {
                 className='mr-3 self-end'
                 onPress={() => { Keyboard.dismiss() }}
             >
-                <$Image
-                    source={icons.buttons}
-                    className={'w-8 h-7'}
-                />
+                <HideKeyborad height={33} width={33} />
             </$TouchableOpacity>
 
     )

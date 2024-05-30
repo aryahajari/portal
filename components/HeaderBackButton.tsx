@@ -1,28 +1,18 @@
 import React from 'react'
-import { $Image, $TouchableOpacity, $View } from './NativeWind'
-import { icons } from '@/constants'
+import { $TouchableOpacity, $View } from './NativeWind'
 import { router } from 'expo-router'
+import { BackIcon } from '@/constants/SVG'
 
-const HeaderBackButton = (props: { href: string }) => {
+const HeaderBackButton = () => {
     return (
-        <$View className='pl-2 w-full flex-row justify-between bg-dark border-b-[1px] border-stone-500 pb-1'>
-            <$TouchableOpacity
-                onPress={() => { props.href === 'back' ? router.back() : router.navigate(props.href) }}
-            >
-                <$Image
-                    source={icons.leftArrow}
-                    className='h-8 w-8'
-                />
-            </$TouchableOpacity>
-            <$TouchableOpacity
-                className='mr-2'
-                onPress={() => { props.href === 'back' ? router.back() : router.navigate(props.href) }}
-            >
-                <$Image
-                    source={icons.setting}
-                    className='h-7 w-7'
-                />
-            </$TouchableOpacity>
+        <$View className='w-full flex-row justify-between mb-0 pb-0 pl-3  pr-3 '>
+            <$View>
+                <$TouchableOpacity
+                    onPress={() => { router.back() }}
+                >
+                    <BackIcon height={25} width={25} />
+                </$TouchableOpacity>
+            </$View>
         </$View>
     )
 }

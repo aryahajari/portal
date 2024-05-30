@@ -53,7 +53,6 @@ export async function getFollowingFeedData(followingList: string[], lastFeedSeen
             orderBy('createdAt', 'desc'),
             limit(RETREAVAL_LIMIT)
         );
-        if (!lastSeen) { console.log('fetch from base') } else { console.log('fetch from last seen') }
         return lastSeen ? query(baseQuery, where("createdAt", "<", lastSeen)) : baseQuery;
     };
 
