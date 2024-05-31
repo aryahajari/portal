@@ -47,5 +47,6 @@ https://github.com/aryahajari/portal/assets/77817876/d38e1e49-efad-4edb-876b-eb2
 The home page features a feed of posts from the users' followers sorted by time.</br>
 It allows users to interact with posts through likes, comments, and bookmarking, creating an engaging social media experience.
 </p>
+
 https://github.com/aryahajari/portal/assets/77817876/3932f77f-f31b-463c-acf1-1d50866509fd
 
