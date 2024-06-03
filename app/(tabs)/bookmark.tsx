@@ -5,7 +5,7 @@ import { useUserData } from '@/context/UserDataProvider';
 import { FeedDbSchema, FeedSchema } from '@/context/schema';
 import { collection, doc, getDoc, getDocs, orderBy, query, Timestamp, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useState } from 'react';
-import { RefreshControl, ViewToken } from 'react-native';
+import { Platform, RefreshControl, ViewToken } from 'react-native';
 
 export default function bookmark() {
     const userData = useUserData();
@@ -50,7 +50,10 @@ export default function bookmark() {
         setViewableItems(props.changed.map((item) => item.key as string))
     }, [visibilityThreshold]);  // Dependency on visibilityThreshold
     return (
-        <$View className='flex-1 bg-dark'>
+        <$View
+            className='flex-1 bg-dark'
+            onLayout={() => { Platform.OS === 'web' && refresh() }}
+        >
             {feeds && <$FlatList
                 data={feeds}
                 renderItem={({ item }) => <FeedLoader feed={item as FeedSchema} visibleItems={viewableItems} />}
@@ -60,7 +63,6 @@ export default function bookmark() {
                     <RefreshControl refreshing={refreshing} onRefresh={refresh} />
                 }
                 onViewableItemsChanged={onViewableItemsChanged}
-
             />}
         </$View>
     );

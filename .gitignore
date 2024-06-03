@@ -8,7 +8,6 @@ server/src/firebase/serviceAccount.json
 server/node_modules/
 # Expo
 .expo/
-dist/
 web-build/
 
 # Native

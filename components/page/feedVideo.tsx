@@ -10,6 +10,7 @@ const FeedVideo = (props: { URL: string, aspectRatio: Number, play: boolean }) =
             {props.URL &&
                 <$View className='flex-1'>
                     <Video
+                        videoStyle={{ width: '100%', height: '100%' }}
                         source={{ uri: props.URL }}
                         rate={1.0}
                         volume={1.0}

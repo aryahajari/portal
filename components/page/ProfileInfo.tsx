@@ -33,11 +33,9 @@ const profileInfo = (props: { userData: UserSchema | null, feed: number }) => {
           <FollowBtn targetId={props.userData.uid} />
         </$View>
       </$View>
-      <$View className='w-full p-3 pt-0 flex-row justify-between'>
-        <$View>
-          <$Text className='text-white pb-2 text-base'>{props.userData.name}</$Text>
-          <$Text className='text-white'>{props.userData.bio}</$Text>
-        </$View>
+      <$View className='w-full pb-3 pt-0 flex justify-between'>
+        <$Text className='text-white pb-2 text-base'>{props.userData.name}</$Text>
+        <$Text className='text-white'>{props.userData.bio}</$Text>
       </$View>
     </$View>
   )

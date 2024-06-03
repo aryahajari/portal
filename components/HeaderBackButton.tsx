@@ -5,7 +5,7 @@ import { BackIcon } from '@/constants/SVG'
 
 const HeaderBackButton = () => {
     return (
-        <$View className='w-full flex-row justify-between mb-0 pb-0 pl-3  pr-3 '>
+        <$View className='w-full flex-row justify-between mb-0 pb-0 pl-3  pr-3 lg:w-1/2 lg:mr-auto lg:ml-auto'>
             <$View>
                 <$TouchableOpacity
                     onPress={() => { router.back() }}

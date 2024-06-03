@@ -3,7 +3,7 @@ import { collection, doc, runTransaction, increment, getDocs, query, orderBy, li
 import { firebaseFirestore } from '@/FirebaseConfig';
 import { useUserData } from '@/context/UserDataProvider';
 import { CommentIcon, SendIcon } from '@/constants/SVG'
-import { RefreshControl, PanResponder, Dimensions, Platform, } from 'react-native';
+import { RefreshControl, PanResponder, Dimensions, Platform, TextStyle, } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
 import { icons } from '@/constants';
 import ShowPFP from './ShowPFP';
@@ -78,14 +78,14 @@ const commentBtn = ({ feedId }: { feedId: string, }) => {
             pfp: userData.pfp,
             name: userData.name
         });
-        setComments(comments.concat({
+        setComments([({
             createdAt: Timestamp.now(),
             comment: txtInput,
             uid: userData.uid,
             userName: userData.userName,
             pfp: userData.pfp,
             name: userData.name
-        } as commentSchema));
+        } as commentSchema), ...comments]);
         setTxtInput('');
         setDisableBtn(false);
 
@@ -107,6 +107,7 @@ const commentBtn = ({ feedId }: { feedId: string, }) => {
                 </$TouchableOpacity>
             </$View>
             <$Modal
+                statusBarTranslucent={true}
                 animationType="slide"
                 transparent={true}
                 visible={showModal}
@@ -114,10 +115,10 @@ const commentBtn = ({ feedId }: { feedId: string, }) => {
                     setshowModal(!showModal);
                 }}>
 
-                <$View className='flex-1 justify-end'>
+                <$View className='flex-1 absolute bottom-0 justify-center items-center'>
                     <$View
-                        className='bg-dark w-full  border-t-[6px] border-r-2 border-l-2  border-white rounded-3xl'
-                        style={{ height: boxHeight, cursor: 'pointer' }}
+                        className='bg-dark w-full lg:w-1/2 border-t-[6px] border-r-2 border-l-2  border-white rounded-t-3xl'
+                        style={{ height: boxHeight, minHeight: boxHeight, maxHeight: boxHeight, cursor: 'pointer' }}
                     >
                         <$View
                             {...panResponder.panHandlers}
@@ -130,13 +131,15 @@ const commentBtn = ({ feedId }: { feedId: string, }) => {
                             </$TouchableOpacity>
                         </$View>
                         <$View className='flex-row  bg-dark w-full border-b-[1px] border-neutral-400 pb-2 justify-between items-center'>
-                            <$View className='flex-row items-center w-9/12 ml-1'>
+                            <$View className='flex-row items-center w-9/12 ml-1 flex-1'>
                                 <ShowPFP size='h-14 w-14' URL={userData?.pfp} />
-                                <$View>
+                                <$View className='flex-1'>
                                     <$Text className='text-white text-base ml-2'>{userData?.name}</$Text>
                                     <$Text className='ml-2 text-secondary-100 text-xs'>@{userData?.userName}</$Text>
                                     <$TextInput
+                                        style={[Platform.OS === 'web' ? { outlineStyle: 'none', flex: 1 } as TextStyle : { borderColor: '#000' }, { scrollbarWidth: 'none' } as TextStyle]}
                                         className='ml-2 text-white text-base'
+                                        numberOfLines={Platform.OS === 'web' ? 3 : undefined}
                                         placeholderTextColor={'#FFF'}
                                         multiline
                                         onChangeText={setTxtInput}
@@ -165,12 +168,14 @@ const commentBtn = ({ feedId }: { feedId: string, }) => {
                             keyExtractor={(item, index) => index.toString()}
                             renderItem={({ item }) => (
                                 <$View className='flex-row pt-2 pb-2 border-b-[1px] border-neutral-400'>
-                                    <$View className='w-1/6 self-center mr-1'>
+                                    <$View className=' self-center ml-2'>
                                         <ShowPFP size='h-14 w-14' URL={(item as commentSchema).pfp} />
                                     </$View>
-                                    <$View className='w-5/6'>
+                                    <$View className='pr-4 ml-2 flex-1 '>
                                         <$Text className='text-white text-base'>{(item as commentSchema).name}</$Text>
-                                        <$Link href={{ pathname: "(userProfile)/[userName]", params: { userName: (item as commentSchema).userName } }}>
+                                        <$Link
+                                            href={{ pathname: "(userProfile)/[userName]", params: { userName: (item as commentSchema).userName } }}
+                                        >
                                             <$Text className='text-secondary-100 text-xs'
                                             >@{(item as commentSchema).userName}
                                             </$Text>
