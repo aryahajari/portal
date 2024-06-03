@@ -107,7 +107,7 @@ const home = () => {
                 ListFooterComponentStyle={{ display: isLastBatch || !userData?.following ? 'none' : 'flex' }}
                 onViewableItemsChanged={onViewableItemsChanged}
                 onEndReached={fetchmore}
-                onEndReachedThreshold={0.5}
+            //onEndReachedThreshold={0.5}
 
             />
         </$View>

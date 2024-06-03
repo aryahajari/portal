@@ -32,8 +32,8 @@ if (Platform.OS === 'web') {
 }
 //-------------------------------------------------------------------------------------------------
 export const firebaseFirestore = initializeFirestore(firebaseApp, {
-    experimentalForceLongPolling: true,
-    ignoreUndefinedProperties: true
+    experimentalForceLongPolling: false,
+    ignoreUndefinedProperties: true,
 })
 export const firebaseStorage = getStorage(firebaseApp);
 
@@ -45,7 +45,7 @@ export async function getUserProfileData(uid: string) {
 }
 
 export async function getFollowingFeedData(followingList: string[], lastFeedSeen: Timestamp | undefined) {
-    const RETREAVAL_LIMIT = 10;
+    const RETREAVAL_LIMIT = 5;
     const createFeedQuery = (lastSeen: Timestamp | undefined) => {
         const baseQuery = query(
             collection(firebaseFirestore, "feeds"),

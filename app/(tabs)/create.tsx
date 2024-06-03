@@ -48,7 +48,7 @@ const create = () => {
             });
             setCaption('');
             setImg(null);
-            router.replace('home');
+            router.replace('profile');
         } catch (error) {
             console.error("Transaction failed: ", error);
             alert("Failed to upload file and create document");
