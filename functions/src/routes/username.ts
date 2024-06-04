@@ -39,29 +39,26 @@ router.get('/checkUsername/:id', (req, res) => {
 });
 router.post('/setUsername', async (req, res) => {
     const { username, token } = req.body as { username: string, token: string };
-
     if (!token) {
         return res.status(401).json({ message: 'Authorization token is missing.' });
     }
-
     try {
         const decodedToken = await auth.verifyIdToken(token);
         console.log('Username:', decodedToken.uid);
         await setUserName(username.toLowerCase(), decodedToken.uid);
-        res.status(200).json({ message: 'User created successfully!' });
+        return res.status(200).json({ message: 'User created successfully!' });
     } catch (Err) {
         const error = Err as AuthError;
         switch (error.code) {
             case 'auth/id-token-expired':
-                res.status(401).json({ message: 'Authorization token is expired.' });
-                break;
+                return res.status(401).json({ message: 'Authorization token is expired.' });
             case 'auth/argument-error':
-                res.status(400).json({ message: 'Invalid token.' });
-                break;
+                return res.status(400).json({ message: 'Invalid token.' });
             default:
-                res.status(400).json({ message: error.message });
+                return res.status(400).json({ message: error.message });
         }
     }
 });
+
 
 export default router;
