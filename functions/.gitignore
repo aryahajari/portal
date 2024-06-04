@@ -1,4 +1,5 @@
 # Compiled JavaScript files
+lib/**/*.js
 lib/
 # TypeScript v1 declaration files
 typings/
