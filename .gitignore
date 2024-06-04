@@ -4,8 +4,8 @@ ios/
 # dependencies
 node_modules/
 #server
-functions/src/firebase/serviceAccount.json
-functions/lib/firebase/serviceAccount.json
+functions/src/firebase/*.json
+functions/lib/firebase/*.json
 # Expo
 .expo/
 web-build/
