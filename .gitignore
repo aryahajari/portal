@@ -6,7 +6,6 @@ node_modules/
 #server
 functions/src/firebase/serviceAccount.json
 functions/lib/firebase/serviceAccount.json
-
 # Expo
 .expo/
 web-build/
