@@ -33,7 +33,7 @@ const GetUserInfo = () => {
     }
     return (
         <>
-            <$View className={`mt-2 mb-2 ${Platform.OS === 'web' && 'flex-1'}`}>
+            <$View className={`mt-2 mb-0 ${Platform.OS === 'web' && 'flex-1'}`}>
                 {userData?.name || name !== '' ?
                     <$Text className='text-white'>Shown Name</$Text>
                     : null
@@ -59,7 +59,7 @@ const GetUserInfo = () => {
                     )}
                 </$View>
             </$View>
-            <$View className={`flex-1 mt-2 ${Platform.OS === 'web' && 'mb-5'}`}>
+            <$View className={`flex-1 mt-4 mb-2 ${Platform.OS === 'web' && 'mb-5'} ${Platform.OS === 'web' && bio !== '' && bio !== userData?.bio && 'mb-9'}`}>
                 {userData?.bio || bio !== '' ?
                     <$Text className='text-white'>Bio</$Text>
                     : null
