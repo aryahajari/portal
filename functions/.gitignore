@@ -10,5 +10,4 @@ node_modules/
 *.local
 
 
-src/firebase/serviceAccount.json
-lib/firebase/serviceAccount.json
+lib/firebase/
