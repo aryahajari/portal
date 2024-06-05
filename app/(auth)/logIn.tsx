@@ -6,6 +6,7 @@ import { Link, router } from 'expo-router'
 import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native'
 import { useState } from 'react';
 import { styled } from 'nativewind'
+import ErrorModal from '@/components/ErrorModal'
 const $View = styled(View);
 const $Text = styled(Text);
 const $ScrollView = styled(ScrollView);
@@ -36,12 +37,32 @@ const signUp = () => {
                 router.replace('/home')
             })
             .catch((error: AuthError) => {
-                console.log('code : ', error.code)
-                console.log('message : ', error.message)
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        setError('Invalid Email\nPlease enter a valid email')
+                        break;
+                    case 'auth/too-many-requests':
+                        setError('Too many requests\nPlease try again later')
+                        break;
+                    case 'auth/network-request-failed':
+                        setError('Network request failed\nPlease check your internet connection')
+                        break;
+                    case 'auth/missing-password':
+                        setError('Missing Password\nPlease enter a password')
+                        break;
+                    case 'auth/invalid-credential':
+                        setError('Invalid Credential\nPlease check your email and password')
+                        break;
+                    default:
+                        setError('An error occurred\nPlease try again')
+                        break;
+                }
             })
     }
+    const [error, setError] = useState<string | null>(null)
     return (
         <>
+            <ErrorModal error={error} setError={setError} />
             <$ScrollView className='bg-dark'>
                 <$View className='justify-center self-center w-2/3 lg:w-1/3'>
                     <$Image
