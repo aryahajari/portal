@@ -104,7 +104,7 @@ const home = () => {
                     />
                 }
                 ListFooterComponent={footer}
-                ListFooterComponentStyle={{ display: (isLastBatch || userData?.following.length == 0) ? 'none' : 'flex' }}
+                ListFooterComponentStyle={{ display: (isLastBatch || !(userData?.following.length == 0)) ? 'none' : 'flex' }}
                 onViewableItemsChanged={onViewableItemsChanged}
                 onEndReached={fetchmore}
             //onEndReachedThreshold={0.5}
