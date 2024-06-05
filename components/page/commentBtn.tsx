@@ -115,9 +115,9 @@ const commentBtn = ({ feedId }: { feedId: string, }) => {
                     setshowModal(!showModal);
                 }}>
 
-                <$View className='flex-1 absolute bottom-0 justify-center items-center'>
+                <$View className='flex-1 fixed justify-end items-center'>
                     <$View
-                        className='bg-dark w-full lg:w-1/2 border-t-[6px] border-r-2 border-l-2  border-white rounded-t-3xl'
+                        className='bg-dark w-full lg:w-1/2 lg:right-1   border-t-[6px] border-r-2 border-l-2  border-white rounded-t-3xl'
                         style={{ height: boxHeight, minHeight: boxHeight, maxHeight: boxHeight, cursor: 'pointer' }}
                     >
                         <$View
