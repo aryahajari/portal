@@ -27,7 +27,7 @@
       "package": "com.aryahajari.portal"
     },
     "web": {
-      "output": "single",
+      "output": "static",
       "bundler": "metro",
       "favicon": "./assets/images/iconGreen.png"
     },
