@@ -1,5 +1,5 @@
 # Portal
-#Web platform:  https://portal-n3xv.vercel.app </br>
+# Web platform:  https://portal-n3xv.vercel.app </br>
 **Project Overview:**  
 Portal is a web and mobile social media application that allows users to share text and photos with their followers.
 
