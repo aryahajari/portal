@@ -88,7 +88,6 @@ const signUp = () => {
                             >  Sign Up
                             </$Link>
                         </$Text>
-
                         <$TouchableOpacity
                             className='bg-primary p-0  justify-center items-center rounded-md flex-1 pb-2 pt-2'
                             onPress={() => { handleSignIn() }}

@@ -1,8 +1,7 @@
 import { ImageSourcePropType, ColorValue } from 'react-native'
-
 import React from 'react'
 import { Tabs } from 'expo-router'
-import { icons } from '../../constants'
+import { icons } from '@/constants'
 import { StatusBar } from 'expo-status-bar';
 import { $Image, $SafeAreaView, $View } from '@/components/NativeWind'
 
@@ -125,6 +124,21 @@ const TabsLayout = () => {
                                     color={color}
                                     focused={focused}
                                     name="Profile"
+                                />
+                            )
+                        }}
+                    />
+                    <Tabs.Screen
+                        name="ai"
+                        options={{
+                            title: 'ai',
+                            headerShown: false,
+                            tabBarIcon: ({ color, focused }) => (
+                                <TabIcon
+                                    icon={icons.alien}
+                                    color={color}
+                                    focused={focused}
+                                    name="ai"
                                 />
                             )
                         }}

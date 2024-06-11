@@ -12,10 +12,12 @@ const home = () => {
     const following = userData?.following
     const uid = userData?.uid
     const lastFeedSeen = userData?.lastFeedSeen
+
     const [refreshing, setRefreshing] = React.useState(false);
     const [feeds, setFeeds] = React.useState<(FeedDbSchema | FeedSchema)[]>([]);
     const [lastFeed, setLastFeed] = React.useState<FeedDbSchema | undefined>(undefined);
     const [isLastBatch, setIsLastBatch] = React.useState(false);
+
     useEffect(() => {
         if (!(following)) return
         getFollowingFeedData(following, lastFeedSeen)
@@ -27,13 +29,10 @@ const home = () => {
                 setIsLastBatch(data.isLastBatch)
             })
     }, [userData])
-    // useEffect(() => {
-    //     console.log(feeds.map((feed, index) => index + '\t' + feed.caption.slice(0, 10) + '\t' + feed.img + '\t' + feed.feedId + "\n"))
-    // }, [feeds])
+
     function refresh() {
         if (!(uid && following)) return
         setRefreshing(true);
-        //setFeeds([])
         updateUserLastFeedSeen(uid).then(() => {
             getFollowingFeedData(following, undefined)
                 .then((data) => {
@@ -48,6 +47,7 @@ const home = () => {
                 })
         })
     }
+
     const fetchmore = async () => {
         const RETREAVAL_LIMIT = 5;
         if (!lastFeed) return
@@ -79,6 +79,7 @@ const home = () => {
             throw new Error('Unable to fetch feed data');
         }
     }
+
     //--------------------Viewability Config--------------------
     type prps = {
         viewableItems: ViewToken<unknown>[];
@@ -108,12 +109,11 @@ const home = () => {
                 onViewableItemsChanged={onViewableItemsChanged}
                 onEndReached={fetchmore}
             //onEndReachedThreshold={0.5}
-
             />
         </$View>
     );
-
 }
+
 const footer = () => {
     return (
         <$View className='flex-1 pt-5 mt-2  justify-center items-center'>
@@ -121,4 +121,5 @@ const footer = () => {
         </$View>
     )
 }
+
 export default home

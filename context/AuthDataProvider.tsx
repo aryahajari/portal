@@ -6,7 +6,7 @@ import { AuthContextSchema } from './schema';
 import { Platform } from 'react-native';
 
 const AuthContext = createContext({} as AuthContextSchema);
-export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const router = useRouter();
     const [userId, setUser] = useState<string | null>();
     const [isSignedIn, setIsSignedIn] = useState<boolean | null>(null);

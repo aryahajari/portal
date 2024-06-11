@@ -1,21 +1,13 @@
+import { $Image, $Link, $ScrollView, $Text, $TextInput, $TouchableOpacity, $TouchableWithoutFeedback, $View } from '@/components/NativeWind';
 import { icons, images } from '@/constants'
-//---------------------------------------------------------------------------------------------------------
-import { createUserWithEmailAndPassword, AuthError } from 'firebase/auth'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { doc, setDoc } from "firebase/firestore";
 import { firebaseAuth, firebaseFirestore } from '@/FirebaseConfig'
-//---------------------------------------------------------------------------------------------------------
-import { Link, router } from 'expo-router'
-import { View, Text, ScrollView, TouchableOpacity, Image, Platform, TextStyle } from 'react-native'
+import { router } from 'expo-router'
+import { Platform, TextStyle } from 'react-native'
 import { useEffect, useState } from 'react';
-import { styled } from 'nativewind'
-import { $TextInput, $TouchableWithoutFeedback } from '@/components/NativeWind';
-const $View = styled(View);
-const $Text = styled(Text);
-const $ScrollView = styled(ScrollView);
-const $TouchableOpacity = styled(TouchableOpacity);
-const $Link = styled(Link);
-const $Image = styled(Image);
-//---------------------------------------------------------------------------------------------------------
+
+
 const signUp = () => {
     interface FormData {
         email: string;

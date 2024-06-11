@@ -8,9 +8,11 @@ import ShowPFP from '@/components/page/ShowPFP'
 const search = () => {
     const [searchText, setSearchText] = React.useState<string>('');
     const [users, setUsers] = React.useState<UserSchema[]>([]);
+
     useEffect(() => {
         searchUsernames(searchText);
     }, [searchText])
+
     async function searchUsernames(substring: string) {
         setSearchText(substring);
         const usersRef = collection(firebaseFirestore, "users");
@@ -20,6 +22,7 @@ const search = () => {
         const querySnapshot = await getDocs(q);
         setUsers(querySnapshot.docs.map(doc => doc.data() as UserSchema))
     }
+
     return (
         <$View className='flex-1 bg-dark'>
             <$View className='flex-1 m-2 bg-dark lg:w-1/2 lg:mr-auto lg:ml-auto justify-center'>

@@ -1,6 +1,6 @@
 import { $View, $Text, $Image, $Link, $FlatList } from '@/components/NativeWind'
 import React, { useCallback, useEffect } from 'react'
-import { getUserFeedData, getUserProfileData } from '@/FirebaseConfig'
+import { getUserFeedData } from '@/FirebaseConfig'
 import { FeedSchema, UserSchema } from '@/context/schema'
 import { useUserData } from '@/context/UserDataProvider';
 import ProfileInfo from '@/components/page/ProfileInfo'
@@ -8,6 +8,7 @@ import FeedLoader from '@/components/page/SingleFeed'
 import { icons } from '@/constants';
 import { RefreshControl, ViewToken } from 'react-native';
 const TOPBARSIZE = 'h-6 w-6'
+
 const Header = ({ userName }: { userName: string }) => {
     return (
         <$View className='w-full lg:w-1/2 lg:mr-auto lg:ml-auto'>
@@ -25,20 +26,14 @@ const Header = ({ userName }: { userName: string }) => {
                             className={TOPBARSIZE + ''}
                         />
                     </$Link>
-
                 </$View>
             </$View>
         </$View>
     )
 }
+
 const profile = () => {
     const [refreshing, setRefreshing] = React.useState(false);
-    function refresh() {
-        setRefreshing(true);
-        setFeeds([])
-        if (!self) return;
-        fetchUserFeedData(self.uid).then(() => { setRefreshing(false); })
-    }
     const [feeds, setFeeds] = React.useState<FeedSchema[] | null>(null)
     const self = useUserData();
     const fetchUserFeedData = async (uid: string) => {
@@ -46,13 +41,22 @@ const profile = () => {
         const feedData = await getUserFeedData(uid);
         setFeeds(feedData);
     };
+
     const fetchmore = async () => {
         console.log('fetching more')
     }
+
     useEffect(() => {
         if (!self) return;
         fetchUserFeedData(self.uid);
     }, [self]);
+
+    function refresh() {
+        setRefreshing(true);
+        setFeeds([])
+        if (!self) return;
+        fetchUserFeedData(self.uid).then(() => { setRefreshing(false); })
+    }
     //--------------------Viewability Config--------------------
     type dsd = {
         viewableItems: ViewToken<unknown>[];
@@ -63,6 +67,7 @@ const profile = () => {
     const onViewableItemsChanged = useCallback((props: dsd) => {
         setViewableItems(props.changed.map((item) => item.key as string))
     }, [visibilityThreshold]);  // Dependency on visibilityThreshold
+
     return (
         <$View className='flex-1 bg-dark'>
             <$FlatList
@@ -87,4 +92,5 @@ const profile = () => {
         </$View>
     );
 }
+
 export default profile

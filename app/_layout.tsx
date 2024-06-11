@@ -1,9 +1,9 @@
 
 import React from 'react'
-import { Slot, Stack } from 'expo-router'
+import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar';
 import { NativeWindStyleSheet } from "nativewind";
-import { GlobalProvider } from '../context/AuthDataProvider';
+import { AuthProvider } from '@/context/AuthDataProvider';
 import { GlobalUserProvider } from '../context/UserDataProvider';
 NativeWindStyleSheet.setOutput({
   default: "native",
@@ -13,7 +13,7 @@ const RootLayout = () => {
   return (
     <>
       <StatusBar style='light' />
-      <GlobalProvider>
+      <AuthProvider>
         <GlobalUserProvider>
           <Stack>
             <Stack.Screen name="index" options={{ headerShown: false }} />
@@ -22,7 +22,7 @@ const RootLayout = () => {
             <Stack.Screen name="(userProfile)" options={{ headerShown: false }} />
           </Stack>
         </GlobalUserProvider>
-      </GlobalProvider>
+      </AuthProvider>
     </>
   )
 }

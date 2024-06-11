@@ -1,5 +1,4 @@
 import { Platform, TextStyle } from 'react-native'
-import { icons } from '@/constants';
 import React, { useState } from 'react'
 import GetPhoto from '@/components/create/GetPhoto'
 import ShowPFP from '@/components/page/ShowPFP';
@@ -7,7 +6,6 @@ import { useUserData } from '@/context/UserDataProvider';
 import { useRouter } from 'expo-router'
 import KeyboardCloser from '@/components/create/KeyboardCloser';
 import { $Image, $ScrollView, $Text, $TextInput, $TouchableOpacity, $View } from '@/components/NativeWind';
-//------------------------------------------------------------------------------------------------------------
 import { ref, uploadBytesResumable } from 'firebase/storage'
 import { serverTimestamp, collection, doc, runTransaction } from 'firebase/firestore';
 import { firebaseFirestore } from '@/FirebaseConfig';

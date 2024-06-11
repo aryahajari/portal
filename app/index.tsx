@@ -2,8 +2,8 @@
 import React, { useEffect } from 'react'
 import { useRouter } from 'expo-router'
 import { NativeWindStyleSheet } from "nativewind";
-import { useAuthContext } from '../context/AuthDataProvider';
-import { useUserData } from '../context/UserDataProvider';
+import { useAuthContext } from '@/context/AuthDataProvider';
+import { useUserData } from '@/context/UserDataProvider';
 import { $View } from '@/components/NativeWind';
 NativeWindStyleSheet.setOutput({
   default: "native",
@@ -14,9 +14,7 @@ const App = () => {
   const userData = useUserData();
   const authData = useAuthContext();
   useEffect(() => {
-    if (authData.isSignedIn === null) return
-    if (authData.isSignedIn) {
-      if (userData === null) return
+    if (authData?.isSignedIn) {
       if (!(userData?.email && userData?.userName && userData?.dateOfBirth && userData?.bio && userData?.name)) {
         //logged in but missing user info
         router.replace('userInfo')
